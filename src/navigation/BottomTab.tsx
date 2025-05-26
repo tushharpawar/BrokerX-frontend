@@ -14,7 +14,7 @@ const Tab = createBottomTabNavigator();
 const BottomTab:FC =()=>{
     return(
         <Tab.Navigator
-        screenOptions={({route}) => ({
+        screenOptions={() => ({
             headerShown: false,
             tabBarHideOnKeyboard:true,
             tabBarStyle:{
@@ -23,10 +23,11 @@ const BottomTab:FC =()=>{
                 backgroundColor:Colors.tabBackground,
                 borderColor:Colors.tabBorder,
                 position:'absolute',
-                height:Platform.OS==='android'? 80 : 90,
+                height:Platform.OS==='android'? 70 : 90,
                 borderTopWidth:0,
-            },
-            tabBarShowLabel: false,
+            },    
+            tabBarActiveTintColor: Colors.tabActive,
+            tabBarInactiveTintColor: Colors.tabInactive,  
         }
         )}
         >
@@ -36,7 +37,7 @@ const BottomTab:FC =()=>{
             options={{
                 tabBarIcon: ({focused}) => (
                     focused ? <Ionicons name='home' size={RFValue(20)} color={Colors.tabActive} /> : <Ionicons name='home-outline' size={RFValue(20)} color={Colors.tabInactive} />
-                )   
+                ) ,
             }}
             />
             <Tab.Screen

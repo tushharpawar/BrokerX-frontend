@@ -1,55 +1,50 @@
-// Colors.tsx
-// ----------------------------------------------------
-// Centralised colour palette for the Lavender-Dark theme
-// ----------------------------------------------------
-
 export const Colors = {
   /* Core background surfaces */
-  background:           '#121220',  // main app bg (deep midnight)
-  surface:              '#1A1A2C',  // cards, modals
-  surfaceElevated:      '#222236',  // higher elevation / pop-ups
+  background:           '#0B0B0F',  // super dark neutral black (main bg)
+  surface:              '#14141C',  // cards, modals, tab bar
+  surfaceElevated:      '#1E1E29',  // popups, overlays
 
-  /* Lavender brand spectrum */
+  /* Lavender brand spectrum (for accents) */
   primary:              '#9C88FF',  // main lavender
-  primaryLight:         '#BCA8FF',  // hover / disabled
-  primaryDark:          '#6E5AFF',  // pressed / focus ring
-  primaryGradientStart: '#BCA8FF',  // optional gradients
+  primaryLight:         '#BCA8FF',
+  primaryDark:          '#6E5AFF',
+  primaryGradientStart: '#BCA8FF',
   primaryGradientEnd:   '#6E5AFF',
 
-  /* Navigation / tab related */
-  tabActive:            '#9C88FF',  // active tab / icon color
-  tabInactive:          '#6E6E88',  // inactive tab / icon color
-  tabBackground:        '#1A1A2C',  // bottom tab background
-  tabBorder:            '#3F3F55',  // optional top border for tab bar
+  /* Navigation / tab bar */
+  tabActive:            '#9C88FF',  // active tab icon
+  tabInactive:          '#6E6E88',  // inactive icon/text
+  tabBackground: '#111115',  
+  tabBorder:            '#2A2A3B',
 
-  /* Greys for dark UI */
-  grey0:  '#F5F4FF',  // almost white (charts axes, subtle dividers)
-  grey1:  '#C8C7E0',  // light text on dark bg (secondary)
-  grey2:  '#A0A0BD',  // captions / timestamps
-  grey3:  '#6E6E88',  // disabled icons / placeholders
-  grey4:  '#3F3F55',  // borders on dark surfaces
+  /* Greys for text/icons/etc. */
+  grey0:  '#F0F0FF',   // brightest text (e.g. titles)
+  grey1:  '#CCCCDD',   // main text (body)
+  grey2:  '#9999AA',   // secondary text
+  grey3:  '#66667A',   // muted labels / disabled
+  grey4:  '#3A3A4D',   // borders / outlines
 
-  /* Semantic colours (finance-centric) */
-  success:        '#4CAF50',  // profit, positive P&L ❇️
+  /* Finance status colors */
+  success:        '#4CAF50',   // profit ✅
   successLight:   '#66D26E',
   successDark:    '#348C39',
 
-  danger:         '#E53935',  // loss, negative P&L 🔻
+  danger:         '#E53935',   // loss ❌
   dangerLight:    '#FF6F61',
   dangerDark:     '#B21410',
 
-  warning:        '#FFB74D',  // non-blocking alerts (e.g. network slow)
-  info:           '#42A5F5',  // neutral informational banners
+  warning:        '#FFB74D',   // alerts
+  info:           '#42A5F5',   // informative
 
-  /* Chart specific */
-  candleUp:       '#4CAF50',      // bullish candle fill
-  candleDown:     '#E53935',      // bearish candle fill
-  volumeBar:      '#6E5AFF50',    // 50% opacity lavender
+  /* Chart related */
+  candleUp:       '#4CAF50',
+  candleDown:     '#E53935',
+  volumeBar:      '#9C88FF50',
 
-  /* Utility transparencies (hex + alpha) */
-  overlayScrim:   '#00000080',    // 50% black for modals
-  lavender10:     '#9C88FF1A',    // 10 % lavender (touch ripple)
-  lavender20:     '#9C88FF33',    // 20 % lavender (focus ring)
+  /* Utility transparencies */
+  overlayScrim:   '#00000080',
+  lavender10:     '#9C88FF1A',
+  lavender20:     '#9C88FF33',
 } as const;
 
 export type ColorKeys = keyof typeof Colors;

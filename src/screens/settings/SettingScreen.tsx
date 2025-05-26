@@ -1,11 +1,17 @@
 import { View, Text } from 'react-native'
 import React, { FC } from 'react'
+import CustomView from '../../components/global/CustomView'
+import { Colors } from '../../constants/Colors'
+
 
 const SettingScreen:FC = () => {
   return (
-    <View>
-      <Text>SettingScreen</Text>
-    </View>
+    <CustomView>
+      <Text style={{
+        color:Colors.grey1,
+        fontSize: 24,
+      }}>SettingScreen</Text>
+    </CustomView>
   )
 }
 
