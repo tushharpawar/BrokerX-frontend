@@ -6,6 +6,13 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Provider } from 'react-redux';
 import { persistor, store } from './src/redux/store';
 import { PersistGate } from 'redux-persist/integration/react';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+
+GoogleSignin.configure({
+  webClientId:'502659074621-3hb7re7m5v9vibimb01ifte1tmfs0bmj.apps.googleusercontent.com',
+  offlineAccess: true,
+  scopes:['profile', 'email'],
+});
 
 const App = () => {
   return (

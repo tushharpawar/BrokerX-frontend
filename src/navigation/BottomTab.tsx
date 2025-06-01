@@ -1,5 +1,5 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import HomeScreen from '../screens/home/HomeScreen';
 import SearchScreen from '../screens/search/SearchScreen';
 import NewsScreen from '../screens/news/NewsScreen';
@@ -8,10 +8,32 @@ import { Platform } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Colors} from '../constants/Colors';
+import { fetchStocks } from '../redux/actions/stockAction';
+import { useAppDispatch } from '../redux/reduxHook';
+import { io } from 'socket.io-client';
+
 
 const Tab = createBottomTabNavigator();
 
 const BottomTab:FC =()=>{
+    const dispatch = useAppDispatch()
+    useEffect(()=>{
+        dispatch(fetchStocks())
+    },[dispatch])
+
+useEffect(() => {
+  const socket = io("http://192.168.1.2:3000");
+
+  socket.on("stock-update", (data) => {
+    console.log("DATA SOCKEt",data);
+    // setState to re-render
+  });
+
+  return () => {
+    socket.disconnect();
+  };
+}, []);
+
     return(
         <Tab.Navigator
         screenOptions={() => ({

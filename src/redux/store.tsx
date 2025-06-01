@@ -11,23 +11,25 @@ import {
 } from 'redux-persist'
 import reduxStorage from './storage'
 import rootReducer from './rootReducer'
+import thunk from 'redux-thunk'
 
 const persistConfig = {
     key:'root',
     storage:reduxStorage,
     blacklist:[],
-    whitelist:['user']
+    whitelist:['user']// Add the slices you want to persist
 }
 
 const persistReducers = persistReducer(persistConfig,rootReducer)
 
 
 export const store = configureStore({
-    reducer:persistReducers,
-    middleware:getDefaultMiddleware => 
+    reducer: persistReducers,
+    middleware: getDefaultMiddleware =>
         getDefaultMiddleware({
-            serializableCheck:{
-                ignoredActions:[FLUSH,REGISTER,REHYDRATE,PAUSE,PERSIST,PURGE]
+            thunk: true, 
+            serializableCheck: {
+                ignoredActions: [FLUSH, REGISTER, REHYDRATE, PAUSE, PERSIST, PURGE]
             }
         })
 })
