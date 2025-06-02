@@ -1,7 +1,7 @@
-import { View, Text } from 'react-native'
 import React, { FC } from 'react'
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import { mergedStack } from './ScreenCollection';
+import { Colors } from '../constants/Colors';
 
 const Stack = createNativeStackNavigator();
 
@@ -18,6 +18,14 @@ const MainNavigation:FC = () => {
           key={index}
           name={Screen.name}
           component={Screen.component}
+          options={({ route }) => ({
+            title: route?.params?.title || null,
+            headerShown: route?.params?.headerShown || false, // Show header unless explicitly set to false
+            headerStyle: {
+              backgroundColor: Colors.background,
+            },
+            headerTintColor: Colors.white,
+          })}
         />
       ))}
     </Stack.Navigator>

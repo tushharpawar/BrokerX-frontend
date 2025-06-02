@@ -10,8 +10,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Colors} from '../constants/Colors';
 import { fetchStocks } from '../redux/actions/stockAction';
 import { useAppDispatch } from '../redux/reduxHook';
-import { io } from 'socket.io-client';
-
+import useLiveStocks from '../hooks/useLiveStocks';
 
 const Tab = createBottomTabNavigator();
 
@@ -21,18 +20,7 @@ const BottomTab:FC =()=>{
         dispatch(fetchStocks())
     },[dispatch])
 
-useEffect(() => {
-  const socket = io("http://192.168.1.2:3000");
-
-  socket.on("stock-update", (data) => {
-    console.log("DATA SOCKEt",data);
-    // setState to re-render
-  });
-
-  return () => {
-    socket.disconnect();
-  };
-}, []);
+    useLiveStocks()
 
     return(
         <Tab.Navigator

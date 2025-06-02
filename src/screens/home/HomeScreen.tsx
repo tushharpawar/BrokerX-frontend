@@ -1,46 +1,81 @@
-import { View, Text, FlatList, Image } from 'react-native'
-import React, { FC, useEffect } from 'react'
+import { View} from 'react-native'
+import React, { FC } from 'react'
 import CustomView from '../../components/global/CustomView'
-import { Colors } from '../../constants/Colors'
-import useLiveStocks from '../../hooks/useLiveStocks'
 import { useAppSelector } from '../../redux/reduxHook'
-import { useSelector } from 'react-redux'
-import { fetchStocks } from '../../redux/actions/stockAction'
+import StockGrid from '../../components/Stocks/StocksGridHomePage'
+import { getStocksByCategory } from '../../utils/functions/getStocksByCategory'
+import { ScrollView, Text } from 'react-native-gesture-handler'
+import { ViewStyle, TextStyle } from 'react-native';
+
 
 const HomeScreen:FC = () => {
-  useLiveStocks();
-  // useEffect(()=>{
-  //   fetchStocks()
-  // })
   const stocks = useAppSelector((state) => state.stocks.stocks);
-  console.log("Stocks:", stocks);
-  return (
-    <CustomView>
-      <Text style={{
-        color:Colors.grey1,
-        fontSize: 24,
-      }}>HomeScreen</Text>
+  const trendingStocks = getStocksByCategory(stocks, 'trending');
+  const largeCapStocks = getStocksByCategory(stocks, 'largeCap');
+  const midCapStocks = getStocksByCategory(stocks, 'midCap');
+  const smallCapStocks = getStocksByCategory(stocks, 'smallCap');
 
-      <FlatList
-      data={stocks}
-      keyExtractor={(item) => item.symbol}
-      renderItem={({ item }) => (
-        <View style={{ padding: 10, borderBottomWidth: 1 }} key={item.symbol}>
-          <Image
-            source={{ uri: item.logo }}
-            style={{ width: 32, height: 32, borderRadius: 16 }}
-          />
-          <Text style={{ fontWeight: "bold",color:'white' }}>{item.companyName}</Text>
-          <Text style={{color:(item.percent > 0 || item.percent == '0.00%') ? "green" : "red"}}>${item.price.toFixed(2)}</Text>
-          <Text style={{ color: (item.price-item.prevClose) > 0 ? "green" : "red" }}>
-             {item.price-item.prevClose > 0 ? "+" : ""}{(item.price-item.prevClose).toFixed(2)} 
-             ({((item.price-item.prevClose)*100/item.price ).toFixed(2)}%)
-          </Text>
+
+  return (
+    <CustomView
+    style={{
+      padding: 6,
+      marginBottom: 60,
+    }}
+    >
+      <ScrollView
+      showsVerticalScrollIndicator={false}
+      >
+        <View 
+        style={styles.categoryContainer}
+        >
+        <Text style={styles.categoryTitle}
+        >Tranding on StockX</Text>
+        <StockGrid stocks={trendingStocks} title={'Tranding on Stock'} category='trending'/>
         </View>
-      )}
-    />
+
+        <View 
+        style={styles.categoryContainer}
+        >
+        <Text style={styles.categoryTitle}
+        >Large cap stocks</Text>
+        <StockGrid stocks={largeCapStocks} title={'Large cap stocks'} category='largeCap'/>
+        </View>
+
+        <View 
+        style={styles.categoryContainer}
+        >
+        <Text style={styles.categoryTitle}
+        >Mid cap stocks</Text>  
+        <StockGrid stocks={midCapStocks} title={'Mid cap stocks'} category='midCap'/>
+        </View>
+
+        <View 
+        style={styles.categoryContainer}
+        >
+        <Text style={styles.categoryTitle}
+        >Small cap stocks</Text>
+        
+        <StockGrid stocks={smallCapStocks} title={'Small cap stocks'} category='smallCap'/>
+        </View>
+      </ScrollView>
     </CustomView>
   )
 }
 
 export default HomeScreen
+
+const styles: {
+  categoryContainer: ViewStyle;
+  categoryTitle: TextStyle;
+} = {
+  categoryContainer: {
+    padding:10,
+  },
+  categoryTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    color: '#F5F5F5', 
+  },
+};

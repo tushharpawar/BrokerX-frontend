@@ -18,6 +18,7 @@ export const Colors = {
   tabBorder:            '#2A2A3B',
 
   /* Greys for text/icons/etc. */
+  white : '#F5F5F5',
   grey0:  '#F0F0FF',   // brightest text (e.g. titles)
   grey1:  '#CCCCDD',   // main text (body)
   grey2:  '#9999AA',   // secondary text
@@ -45,6 +46,9 @@ export const Colors = {
   overlayScrim:   '#00000080',
   lavender10:     '#9C88FF1A',
   lavender20:     '#9C88FF33',
+
+  /* card colors */
+  cardBackground: '#1e1e1e',
 } as const;
 
 export type ColorKeys = keyof typeof Colors;
