@@ -3,7 +3,6 @@ import StocksHomeCard from "./StocksHomeCard";
 import { Text } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 
-// Define the navigation param list for your stack
 
 type  CatogaryStocksScreen = { stocks: any; title: string,category: string };
 
@@ -11,7 +10,7 @@ type  CatogaryStocksScreen = { stocks: any; title: string,category: string };
 const StockGrid = ({ stocks, title, category }:CatogaryStocksScreen) => {
     const firstTwo = stocks.slice(0, 2);
     const third = stocks[2];
-    const navigation = useNavigation<any>(); // Use 'any' or useNavigation<StackNavigationProp<RootStackParamList>>() if you have @react-navigation/stack
+    const navigation = useNavigation<any>(); 
 
     const onSeeMore = () => {
         navigation.navigate("CatogaryStocksScreen", {

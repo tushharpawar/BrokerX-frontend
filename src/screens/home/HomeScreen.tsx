@@ -39,7 +39,7 @@ const HomeScreen:FC = () => {
         >
         <Text style={styles.categoryTitle}
         >Large cap stocks</Text>
-        <StockGrid stocks={largeCapStocks} title={'Large cap stocks'} category='largeCap'/>
+        <StockGrid stocks={largeCapStocks} title={'Large cap stocks'} category='largeCap' />
         </View>
 
         <View 

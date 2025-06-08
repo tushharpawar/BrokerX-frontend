@@ -1,7 +1,9 @@
-import { Dimensions, Image, StyleSheet, Text, View } from 'react-native'
+import { Dimensions, Image, StyleSheet, Text, Touchable, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import CustomView from '../global/CustomView'
 import { Colors } from '../../constants/Colors';
+import Navigation from '../../navigation/Navigation';
+import { useNavigation } from '@react-navigation/native';
 
 
 interface StocksCardCatogaryProps {
@@ -15,11 +17,14 @@ interface StocksCardCatogaryProps {
   };
 }
 
+
 //Stock category page card component
 const StocksCardCatogaryPage: React.FC<StocksCardCatogaryProps> = ({ item }) => {
+  const navigation = useNavigation<any>()
   return (
- <CustomView
+ <TouchableOpacity
       style={styles.cardContainer}
+      onPress={() => navigation.navigate("StocksDetails",{ stock: item })}
     >
       <View style={{ marginBottom: 8 }}>
         <Image
@@ -44,7 +49,7 @@ const StocksCardCatogaryPage: React.FC<StocksCardCatogaryProps> = ({ item }) => 
         {item.change} ({item.percent})
       </Text>
     </View>
-    </CustomView>
+    </TouchableOpacity>
   )
 }
 

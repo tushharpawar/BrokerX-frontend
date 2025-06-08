@@ -1,7 +1,8 @@
-import { Dimensions, Image, StyleSheet, Text, View } from 'react-native'
+import { Dimensions, Image, StyleSheet, Text, Touchable, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import CustomView from '../global/CustomView'
 import { Colors } from '../../constants/Colors';
+import { useNavigation } from '@react-navigation/native';
 
 const CARD_WIDTH = (Dimensions.get("window").width - 30) / 2;
 
@@ -17,9 +18,11 @@ interface StocksHomeCardProps {
 }
 
 const StocksHomeCard: React.FC<StocksHomeCardProps> = ({ item }) => {
+  const navigation = useNavigation<any>();
   return (
- <CustomView
+ <TouchableOpacity
       style={styles.cardContainer}
+      onPress={()=>navigation.navigate("StocksDetails", { stock: item })}
     >
       <View style={{ flexDirection: "column", marginBottom: 8 }}>
         <Image
@@ -41,7 +44,7 @@ const StocksHomeCard: React.FC<StocksHomeCardProps> = ({ item }) => {
       >
         {item.change} ({item.percent})
       </Text>
-    </CustomView>
+    </TouchableOpacity>
   )
 }
 
@@ -49,9 +52,10 @@ export default StocksHomeCard
 
 const styles = StyleSheet.create({
     cardContainer:{
+      flex: 1,
         backgroundColor: Colors.cardBackground, // dark card
         borderRadius: 12,
-        padding: 12,
+        padding: 10,
         margin: 5,
         width: CARD_WIDTH,
         shadowColor: "#000",

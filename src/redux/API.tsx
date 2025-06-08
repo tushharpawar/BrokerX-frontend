@@ -1,4 +1,4 @@
-export const BASE_URL ='http://192.168.1.2:3000'
+export const BASE_URL ='http://192.168.31.8:3000'
 export const REGISTER = `${BASE_URL}/oauth/register`;
 export const LOGIN = `${BASE_URL}/oauth/login`;
 export const REFRESH_TOKEN = `${BASE_URL}/oauth/refresh-token`;
