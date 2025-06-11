@@ -7,10 +7,11 @@ import {
     LineChart
 } from 'react-native-wagmi-charts';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
-import dayjs from "dayjs";
+import dayjs from "dayjs"
 
 interface MiniChartProps {
     symbol: string;
+    color?: string;
 }
 
 const filters: Array<"1D" | "1W" | "1M" | "1Y" | "5Y"> = ["1D", "1W", "1M", "1Y", "5Y"];
@@ -21,7 +22,7 @@ const options = {
   ignoreAndroidSystemSettings: false,
 };
 
-const MiniChart = ({ symbol }: MiniChartProps) => {
+const MiniChart = ({ symbol,color }: MiniChartProps) => {
 
     const [historicalPrices, setHistoricalPrices] = useState<any>([]);
     const [dataFetched, setDataFetched] = useState(false);
@@ -58,7 +59,7 @@ const MiniChart = ({ symbol }: MiniChartProps) => {
                     end_date: newTo,
                     interval: resolution,
                     outputsize: 1000,
-                    apikey: '',
+                    apikey: 'ed0ff8bd51a44ef7b5a59c5014a890b1',
                 },
             });
 
@@ -95,12 +96,12 @@ const MiniChart = ({ symbol }: MiniChartProps) => {
                         <View style={{ width: '100%', justifyContent:'center',alignItems: 'center', paddingVertical: 10 }}>
                             <LineChart.Provider data={data}>
                                 <LineChart height={250} width={chartWidth}>
-                                    <LineChart.Path color='limegreen' width={1.25}>
+                                    <LineChart.Path color={color||'limegreen'} width={1.25}>
                                         <LineChart.HorizontalLine at={{ index: 0 }} />
                                     </LineChart.Path>
                                     <LineChart.CursorLine color={Colors.white}  onActivated={() => ReactNativeHapticFeedback.trigger("impactHeavy", options)}/>
                                 </LineChart>
-                                <LineChart.PriceText style={{ fontSize: 16, color: 'limegreen' }} />
+                                <LineChart.PriceText style={{ fontSize: 16, color: color||'limegreen' }} />
                                 <LineChart.DatetimeText
                                     style={{ fontSize: 12, color: 'gray' }}
                                 />

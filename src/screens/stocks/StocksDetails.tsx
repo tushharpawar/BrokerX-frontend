@@ -6,60 +6,66 @@ import axios from 'axios';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import IonIcons from 'react-native-vector-icons/Ionicons';
 import { Colors } from '../../constants/Colors';
-import MiniChart from './MiniChart';
+import MiniChart from '../../components/Stocks/MiniChart';
 import { ScrollView } from 'react-native-gesture-handler';
+import useStockLivePrice from '../../hooks/StocksDetailsHooks/useStockLivePrice';
+import { BASE_URL } from '../../redux/API';
 
-const TOKEN = ''
+const TOKEN = 'ed0ff8bd51a44ef7b5a59c5014a890b1';
 
 const StocksDetails = ({ route }: any) => {
+    const [profile, setProfile] = useState<any>(null);
+    const [financials,setFinancials] = useState<any>(null);
     const { stock } = route.params || {};
     const symbol = stock?.symbol;
-    console.log("Stock Details:", stock);
 
-    const [profile, setProfile] = useState(null);
-    const [price, setPrice] = useState(null);
-
-    // Fetch static profile info
-    const fetchProfile = async () => {
+      const fetchProfile = async () => {
         try {
-            const response = await axios.get(`https://finnhub.io/api/v1/stock/profile2`, {
-                params: { symbol, token: TOKEN }
-            });
-            if (response.data) {
-                setProfile(response.data);
-            } else {
-                console.error("No profile data found for symbol:", symbol);
-                setProfile(null);
-            }
-        } catch (error) {
-            console.error("Error fetching profile:", error);
+          const res = await axios.get(
+            `https://api.twelvedata.com/quote?symbol=${symbol}&apikey=${TOKEN}`,
+          );
+    
+          if (res.data && !res.data.code) {
+            setProfile(res.data);
+          } else {
+            console.error('Error in profile data:', res.data);
             setProfile(null);
+          }
+        } catch (error) {
+          console.error('Error fetching profile:', error);
+          setProfile(null);
         }
-    }
+      };
 
-
-    useEffect(() => {
-        fetchProfile();
-        // Open WebSocket connection for live price
-        const ws = new WebSocket(`wss://ws.finnhub.io?token=${TOKEN}`);
-        ws.onopen = () => {
-            ws.send(JSON.stringify({ type: "subscribe", symbol }));
-        };
-        ws.onmessage = (e) => {
-            const msg = JSON.parse(e.data);
-            if (msg.type === "trade") {
-                setPrice(msg.data[0]?.p); // current price
+      const fetchFinancials = async () => {
+        try {
+            const res = await axios.get(
+                `${BASE_URL}/api/stock/financials?symbol=${symbol}`
+            );
+            console.log("Financials response:", res.data);
+            if (res.data && !res.data.code) {
+                setFinancials(res.data);
+            } else {
+                console.error('Error in financials data:', res.data);
+                setFinancials(null);
             }
-        };
-        return () => {
-            ws.send(JSON.stringify({ type: "unsubscribe", symbol }));
-            ws.close();
-        };
-    }, [symbol]);
+            }
+        catch (error) {
+            console.error('Error fetching financials:', error);
+            setFinancials(null);
+        }
+      };
+    
+      useEffect(() => {
+        fetchProfile();
+        fetchFinancials();
+      }, [symbol]);
 
+    const previousClosePrice = stock?.prevClose || 0;
 
-    console.log("Profile:", profile);
-    console.log("Price:", price);
+    const {price} = useStockLivePrice(symbol);
+    const change = price! - previousClosePrice;
+    const changePercent = (change / previousClosePrice) * 100;
 
     return (
         <CustomSafeAreaView>
@@ -94,11 +100,13 @@ const StocksDetails = ({ route }: any) => {
                     </View>
 
                     <View style={styles.priceContainer}>
-                        <Text style={styles.priceText}>${stock.price}</Text>
-                        <Text style={styles.changeText}>+1.22 (3.22%)</Text>
+                        <Text style={styles.priceText}>${price ? price : stock?.price}</Text>
+                        <Text style={[styles.changeText,change < 0 ? {color:'tomato'}:{color:'limegreen'}]}>{change ? change.toFixed(2):stock?.change} ({changePercent?changePercent.toFixed(2):stock?.changePercent}%)</Text>
                     </View>
+                            
+                    {price && <MiniChart symbol={symbol} color={change > 0 ? 'limegreen':'tomato'}/>}
 
-                    <MiniChart symbol={symbol} />
+
                 </CustomView>
             </ScrollView>
         </CustomSafeAreaView>
