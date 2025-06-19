@@ -14,6 +14,7 @@ interface StocksCardCatogaryProps {
     change: string;
     percent: string;
     changeRaw: number;
+    prevClose: number;
   };
 }
 
@@ -21,6 +22,10 @@ interface StocksCardCatogaryProps {
 //Stock category page card component
 const StocksCardCatogaryPage: React.FC<StocksCardCatogaryProps> = ({ item }) => {
   const navigation = useNavigation<any>()
+    const previousClosePrice = item?.prevClose
+
+  const change = item.price - previousClosePrice;
+  const changePercent = (change / previousClosePrice) * 100;
   return (
  <TouchableOpacity
       style={styles.cardContainer}
@@ -40,13 +45,13 @@ const StocksCardCatogaryPage: React.FC<StocksCardCatogaryProps> = ({ item }) => 
      <Text style={{ color: Colors.white, fontSize: 14 }}>${item.price.toFixed(2)}</Text>
       <Text
         style={{
-          color: item.changeRaw >= 0 ? "limegreen" : "tomato",
+          color: item.changeRaw || change >= 0 ? "limegreen" : "tomato",
           fontWeight: "600",
           fontSize: 14,
           marginTop: 4,
         }}
       >
-        {item.change} ({item.percent})
+        {item.change || change.toFixed(2)} ({item.percent || changePercent.toFixed(2)}%)
       </Text>
     </View>
     </TouchableOpacity>

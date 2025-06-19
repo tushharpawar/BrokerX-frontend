@@ -44,7 +44,7 @@ const SplashScreen:FC = () => {
         try {
           console.log("Access token expired, refreshing token...");
           referesh_tokens()
-          dispatch(refetchUser)
+          dispatch(refetchUser())
         } catch (error) {
           console.error("Error refreshing token:", error);
           Alert.alert("Session Expired")

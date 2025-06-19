@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CHECK_USERNAME, REGISTER } from "../API";
+import {  REGISTER } from "../API";
 import { appAxios } from "../apiConfig";
 import { setUser } from "../reducers/userSlice";
 import { Alert } from "react-native";
