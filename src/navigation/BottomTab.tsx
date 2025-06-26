@@ -11,6 +11,7 @@ import { Colors} from '../constants/Colors';
 import { fetchStocks } from '../redux/actions/stockAction';
 import { useAppDispatch } from '../redux/reduxHook';
 import useLiveStocks from '../hooks/useLiveStocks';
+import HomeScreenTopTab from './HomeScreenTopTab';
 
 const Tab = createBottomTabNavigator();
 
@@ -43,7 +44,7 @@ const BottomTab:FC =()=>{
         >
             <Tab.Screen
             name='Home'
-            component={HomeScreen}
+            component={HomeScreenTopTab}
             options={{
                 tabBarIcon: ({focused}) => (
                     focused ? <Ionicons name='home' size={RFValue(20)} color={Colors.tabActive} /> : <Ionicons name='home-outline' size={RFValue(20)} color={Colors.tabInactive} />
@@ -51,7 +52,7 @@ const BottomTab:FC =()=>{
             }}
             />
             <Tab.Screen
-            name='Seach'
+            name='Search'
             component={SearchScreen}
             options={{
                 tabBarIcon: ({focused}) => (

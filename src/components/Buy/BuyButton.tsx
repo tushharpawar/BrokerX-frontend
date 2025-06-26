@@ -2,10 +2,10 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { Colors } from '../../constants/Colors'
 
-const BuyButton = () => {
+const BuyButton = ({onPress= ()=>{},error=null}:any) => {
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={[styles.button,error&&error.length>0 && {opacity:0.3}]} onPress={onPress} disabled={error && error.length > 0}>
         <Text style={styles.buttonText}>Buy</Text>
       </TouchableOpacity>
     </View>
@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
         width: '100%',
         padding: 12,
         backgroundColor: '#4CAF50',
+        borderRadius: 10
     },
     buttonText: {
         color: '#fff',

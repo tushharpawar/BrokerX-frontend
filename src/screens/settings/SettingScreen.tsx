@@ -39,7 +39,7 @@ const SettingScreen: FC = () => {
         <TouchableOpacity style={styles.menuContainer}>
           <Ionicons name="wallet-outline" size={28} color={Colors.grey2} />
           <View style={{ flex: 1, marginLeft: 30, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Text style={{ color: Colors.white, fontSize: 16 }}>$ {user?.balance}</Text>
+            <Text style={{ color: Colors.white, fontSize: 16 }}>${user?.balance.toFixed(2)}</Text>
             <TouchableOpacity
               style={{
                 backgroundColor: Colors.cardBackground

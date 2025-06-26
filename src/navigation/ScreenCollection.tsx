@@ -7,6 +7,12 @@ import StocksDetails from "../screens/stocks/StocksDetails";
 import BottomTab from "./BottomTab";
 import AddMoneyScreen from "../screens/settings/AddMoneyScreen";
 import SettingScreen from "../screens/settings/SettingScreen";
+import BuyScreen from "../screens/buy/BuyScreen";
+import SellScreen from "../screens/buy/SellScreen";
+import { compose } from "redux";
+import HoldingsScreen from "../screens/holdings/HoldingsScreen";
+import WatchlistScreen from "../screens/watchlist/WatchlistScreen";
+import HomeScreenTopTab from "./HomeScreenTopTab";
 
 export const authStack = [
     {
@@ -27,12 +33,25 @@ export const bottomTabStack = [
 ]
 
 export const homeStack = [
+    // {
+    //     name:'HomeScreenTopTab',
+    //     component:HomeScreenTopTab
+    // },
     {
         name:'HomeScreen',
         component:HomeScreen
-    },{
+    },
+    {
         name:'CatogaryStocksScreen',
         component:CatogaryStocksScreen,
+    },
+    {
+        name:'HoldingsScreen',
+        component:HoldingsScreen,
+    },
+    {
+        name:'WatchlistScreen',
+        component:WatchlistScreen
     }
 ]
 
@@ -54,4 +73,15 @@ export const settingsStack = [
     }
 ]
 
-export const mergedStack = [...bottomTabStack,...authStack,...homeStack,...stockStack,...settingsStack];
+export const buyStack = [
+    {
+        name:'BuyScreen',
+        component:BuyScreen
+    },
+    {
+        name:'SellScreen',
+        component:SellScreen
+    }
+]
+
+export const mergedStack = [...bottomTabStack,...authStack,...homeStack,...stockStack,...settingsStack,...buyStack];

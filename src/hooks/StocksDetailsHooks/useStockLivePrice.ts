@@ -9,8 +9,6 @@ const useStockLivePrice = (symbol: string) => {
   const [price, setPrice] = useState<number | null>(null);
 
   useEffect(() => {
-    console.log("📲 Entering details screen for", symbol);
-
     socket.emit("subscribe-to-single", symbol);
 
     socket.on("stock-single-update", (data) => {
@@ -20,7 +18,6 @@ const useStockLivePrice = (symbol: string) => {
     });
 
     return () => {
-      console.log("👋 Leaving detail screen for", symbol);
       socket.emit("unsubscribe-from-single");
       socket.off("stock-single-update");
     };

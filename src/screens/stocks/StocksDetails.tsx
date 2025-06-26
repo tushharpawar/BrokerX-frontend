@@ -12,7 +12,8 @@ import useStockLivePrice from '../../hooks/StocksDetailsHooks/useStockLivePrice'
 import { BASE_URL } from '../../redux/API';
 import Overview from '../../components/Stocks/Overview';
 import RangeBar from '../../components/Stocks/RangeBar';
-import BuyButton from '../../components/Stocks/BuyButton';
+import BuyButton from '../../components/Buy/BuyButton';
+import { useNavigation } from '@react-navigation/native';
 
 const TOKEN = 'ed0ff8bd51a44ef7b5a59c5014a890b1';
 
@@ -21,6 +22,7 @@ const StocksDetails = ({ route }: any) => {
     const [financials, setFinancials] = useState<any>(null);
     const { stock } = route.params || {};
     const symbol = stock?.symbol;
+    const navigation = useNavigation();
 
     const fetchProfile = async () => {
         try {
@@ -63,14 +65,16 @@ const StocksDetails = ({ route }: any) => {
         fetchFinancials();
     }, [symbol]);
 
+    const navigateToBuyScreen = () =>{
+        navigation.navigate('BuyScreen', { stock,headerShown: true });
+    }
+
     const previousClosePrice = stock?.prevClose || profile?.close;
 
     const { price } = useStockLivePrice(symbol);
     const change = price!  - previousClosePrice;
     const changePercent = (change / previousClosePrice) * 100;
-
-    console.log("Profile data:", profile);
-    console.log("Financials data:", financials);
+    
     return (
         <CustomSafeAreaView style={{ flex: 1,position: 'relative' }}>
             <ScrollView showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
@@ -153,7 +157,7 @@ const StocksDetails = ({ route }: any) => {
                 </CustomView>
             </ScrollView>
             <View style={{marginBottom: 10, marginHorizontal: 10, position: 'absolute', bottom: 0, left: 0, right: 0}}>
-                <BuyButton/>
+                <BuyButton onPress={navigateToBuyScreen}/>
             </View>
         </CustomSafeAreaView>
     )

@@ -35,7 +35,6 @@ const MiniChart = ({ symbol,color }: MiniChartProps) => {
             timestamp: d.time,
         }));
         setData(data);
-        console.log("Processed Data:", data);
     }, [dataFetched]);
 
     const fetchHistoricalData = async (symbol: string, filter: "1D" | "1W" | "1M" | "1Y" | "5Y") => {
@@ -47,9 +46,6 @@ const MiniChart = ({ symbol,color }: MiniChartProps) => {
         const { from, to, resolution } = await getTimeRange(symbol, filter);
         const newFrom = dayjs.unix(from).format("YYYY-MM-DD HH:mm:ss")
         const newTo = dayjs.unix(to).format("YYYY-MM-DD HH:mm:ss")
-
-        console.log("FROM:", from, "TO:", to, "RESOLUTION:", resolution);
-        console.log("New From:", newFrom, "New To:", newTo);
 
         try {
             const response = await axios.get("https://api.twelvedata.com/time_series", {
@@ -70,7 +66,6 @@ const MiniChart = ({ symbol,color }: MiniChartProps) => {
                 })).reverse();
                 setHistoricalPrices(data);
                 setDataFetched(true);
-                console.log("Historical Data:", data);
                 return data;
             }
         } catch (error) {
