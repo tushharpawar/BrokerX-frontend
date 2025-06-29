@@ -11,9 +11,9 @@ interface CustomSafeAreaViewProps {
 const CustomSafeAreaView = ({children,style}:CustomSafeAreaViewProps) => {
   return (
     <SafeAreaView style={[styles.container, style]}>
-      {/* <View style={[styles.container, style]}> */}
+      <View style={[styles.container, style]}>
         {children}
-      {/* </View> */}
+      </View>
     </SafeAreaView>
   )
 }
@@ -23,7 +23,6 @@ export default CustomSafeAreaView
 const styles = StyleSheet.create({
       container: {
         flex: 1,
-        padding:10,
         backgroundColor: Colors.background,
       },
 })

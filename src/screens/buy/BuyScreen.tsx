@@ -4,18 +4,21 @@ import CustomSafeAreaView from '../../components/global/CustomSafeAreaView'
 import { Colors } from '../../constants/Colors'
 import { TextInput } from 'react-native-gesture-handler'
 import BuyButton from '../../components/Buy/BuyButton'
-import { useAppSelector } from '../../redux/reduxHook'
+import { useAppSelector, useAppDispatch } from '../../redux/reduxHook'
 import { s } from 'react-native-size-matters'
-import { buyHoldingsAction } from '../../redux/actions/buyAction'
+import { buyHoldingsAction, getHoldingsAction } from '../../redux/actions/buyAction'
+import { refetchUser } from '../../redux/actions/userAction'
 import useStockLivePrice from '../../hooks/StocksDetailsHooks/useStockLivePrice'
 
 const BuyScreen = ({ route, navigation }: any) => {
     const { stock } = route.params || {};
     const {user} = useAppSelector((state:any) => state.user);
+    const dispatch = useAppDispatch();
     const [atMarketPrice, setMarketPrice] = useState(true);
     const [quantity, setQuantity] = useState<any>();
     const [error,setError] = useState<any>(null);
     const [isQuantityError, setIsQuantityError] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const { price } = useStockLivePrice(stock.symbol)
 
     useEffect(() => {
@@ -56,7 +59,7 @@ const BuyScreen = ({ route, navigation }: any) => {
         setIsQuantityError(false);
     };
 
-    const buyHoldings = () =>{
+    const buyHoldings = async () =>{
         if(error && error.length > 0){
             return;
         }
@@ -66,19 +69,36 @@ const BuyScreen = ({ route, navigation }: any) => {
             return;
         }
 
+        setIsLoading(true);
         const values = {
             userId:user._id,
             symbol:stock.symbol,
             quantity: parseInt(quantity, 10),
             price: atMarketPrice ? stock.price : parseFloat(stock.price).toFixed(2),
         }
-        const res = buyHoldingsAction(values)
-        console.log("Buy action response:", res);
-        if(res){
-            navigation.navigate('BottomTab', {screen:'HoldingsScreen'});
+        
+        try {
+            const res = await buyHoldingsAction(values);
+            console.log("Buy action response:", res);
+            
+            // Refresh user data and holdings after successful purchase
+            await dispatch(refetchUser());
+            await dispatch(getHoldingsAction({ userId: user._id }));
+            
+            navigation.navigate('BottomTab', { 
+                screen: 'Home',
+                params: {
+                    screen: 'Holdings'
+                }
+            });
             setQuantity('');
             setMarketPrice(true);
             setError(null);
+        } catch (error) {
+            console.error('Error during buy action:', error);
+            setError('Failed to purchase stock. Please try again.');
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -161,7 +181,7 @@ const BuyScreen = ({ route, navigation }: any) => {
                         <Text style={styles.balanceText}>Balance: <Text>${user.balance.toFixed(2)}</Text></Text>
                         <Text style={styles.balanceText}>Required: {quantity > 0 && <Text>${quantity > 0 ? (quantity * stock.price).toFixed(2):null}</Text>}</Text>
                     </View>
-                <BuyButton onPress={buyHoldings} error={error}/>
+                <BuyButton onPress={buyHoldings} error={error} isLoading={isLoading}/>
             </View>
         </CustomSafeAreaView>
     )

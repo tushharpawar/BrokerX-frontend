@@ -1,5 +1,5 @@
-import { Image, StyleSheet, Text, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import { Image, StyleSheet, Text, View, Animated } from 'react-native'
+import React, { useEffect, useState, useRef } from 'react'
 import CustomView from '../../components/global/CustomView';
 import CustomSafeAreaView from '../../components/global/CustomSafeAreaView';
 import axios from 'axios';
@@ -7,22 +7,28 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import IonIcons from 'react-native-vector-icons/Ionicons';
 import { Colors } from '../../constants/Colors';
 import MiniChart from '../../components/Stocks/MiniChart';
-import { ScrollView } from 'react-native-gesture-handler';
 import useStockLivePrice from '../../hooks/StocksDetailsHooks/useStockLivePrice';
 import { BASE_URL } from '../../redux/API';
 import Overview from '../../components/Stocks/Overview';
 import RangeBar from '../../components/Stocks/RangeBar';
 import BuyButton from '../../components/Buy/BuyButton';
 import { useNavigation } from '@react-navigation/native';
+import { useAppSelector } from '../../redux/reduxHook';
+import { checkIfUserOwnsStock, getUserHoldingForStock } from '../../utils/functions/holdingsHelper';
 
 const TOKEN = 'ed0ff8bd51a44ef7b5a59c5014a890b1';
 
 const StocksDetails = ({ route }: any) => {
     const [profile, setProfile] = useState<any>(null);
     const [financials, setFinancials] = useState<any>(null);
+    const [showHeaderContent, setShowHeaderContent] = useState(false);
     const { stock } = route.params || {};
     const symbol = stock?.symbol;
-    const navigation = useNavigation();
+    const navigation = useNavigation<any>();
+    const scrollY = useRef(new Animated.Value(0)).current;
+    const { holdings } = useAppSelector((state: any) => state?.holdings);
+    const userOwnsStock = checkIfUserOwnsStock(holdings, symbol);
+    const userHolding = getUserHoldingForStock(holdings, symbol);
 
     const fetchProfile = async () => {
         try {
@@ -65,19 +71,71 @@ const StocksDetails = ({ route }: any) => {
         fetchFinancials();
     }, [symbol]);
 
-    const navigateToBuyScreen = () =>{
-        navigation.navigate('BuyScreen', { stock,headerShown: true });
-    }
-
     const previousClosePrice = stock?.prevClose || profile?.close;
 
     const { price } = useStockLivePrice(symbol);
     const change = price!  - previousClosePrice;
     const changePercent = (change / previousClosePrice) * 100;
-    
+
+    const handleScroll = Animated.event(
+        [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+        {
+            useNativeDriver: false,
+            listener: (event: any) => {
+                const offsetY = event.nativeEvent.contentOffset.y;
+                const shouldShowHeader = offsetY > 150;
+                if (shouldShowHeader !== showHeaderContent) {
+                    setShowHeaderContent(shouldShowHeader);
+                }
+            },
+        }
+    );
+
+    // Update navigation header based on scroll position
+    useEffect(() => {
+        navigation.setOptions({
+            headerShown: showHeaderContent,
+            headerTitle: () => showHeaderContent ? (
+                <View style={styles.headerContainer}>
+                    <Text style={styles.headerCompanyName} numberOfLines={1}>
+                        {stock.companyName}
+                    </Text>
+                    <View style={styles.headerPriceContainer}>
+                        <Text style={styles.headerPrice}>
+                            ${price ? price.toFixed(2) : stock?.price}
+                        </Text>
+                        <Text style={[
+                            styles.headerChange, 
+                            { color: change < 0 ? '#ff4d4f' : '#4CAF50' }
+                        ]}>
+                            {change ? change.toFixed(2) : stock?.change} ({changePercent ? changePercent.toFixed(2) : stock?.changePercent}%)
+                        </Text>
+                    </View>
+                </View>
+            ) : undefined,
+            headerStyle: {
+                backgroundColor: Colors.background,
+            },
+            headerTintColor: Colors.white,
+        });
+    }, [navigation, showHeaderContent, stock, price, change, changePercent]);
+
+    const navigateToBuyScreen = () => {
+        navigation.navigate('BuyScreen', { stock, headerShown: true });
+    }
+
+    const navigateToSellScreen = () => {
+        navigation.navigate('SellScreen', { stock, holding: userHolding, headerShown: true });
+    }
+
     return (
         <CustomSafeAreaView style={{ flex: 1,position: 'relative' }}>
-            <ScrollView showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
+            <Animated.ScrollView 
+                showsHorizontalScrollIndicator={false} 
+                showsVerticalScrollIndicator={false}
+                onScroll={handleScroll}
+                scrollEventThrottle={16}
+            >
                 <CustomView style={styles.container}>
                     <View
                         style={{
@@ -93,6 +151,11 @@ const StocksDetails = ({ route }: any) => {
                             />
                             <View>
                                 <Text style={styles.companyName}>{stock.companyName}</Text>
+                                {userOwnsStock && (
+                                    <Text style={styles.holdingIndicator}>
+                                        You own {userHolding?.quantity} shares
+                                    </Text>
+                                )}
                             </View>
                         </View>
                         <View
@@ -155,9 +218,25 @@ const StocksDetails = ({ route }: any) => {
                     </View>
 
                 </CustomView>
-            </ScrollView>
-            <View style={{marginBottom: 10, marginHorizontal: 10, position: 'absolute', bottom: 0, left: 0, right: 0}}>
-                <BuyButton onPress={navigateToBuyScreen}/>
+            </Animated.ScrollView>
+            <View style={{backgroundColor:Colors.background,paddingBottom: 10,borderTopWidth:1,borderTopColor:Colors.tabBorder ,paddingHorizontal: 10, position: 'absolute', bottom: 0, left: 0, right: 0}}>
+                {userOwnsStock ? (
+                    <View style={{ flexDirection: 'row', gap: 10 }}>
+                        <View style={{ flex: 1 }}>
+                            <BuyButton 
+                                onPress={navigateToSellScreen} 
+                                title="Sell" 
+                                backgroundColor="#ff4d4f"
+                            />
+                        </View>
+                        <View style={{ flex: 1 }}>
+                            <BuyButton onPress={navigateToBuyScreen} title="Buy" />
+                        </View>
+                    </View>
+                ) : (
+                    // Show only Buy button when user doesn't own the stock
+                    <BuyButton onPress={navigateToBuyScreen} />
+                )}
             </View>
         </CustomSafeAreaView>
     )
@@ -180,6 +259,12 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
         color: Colors.white,
+    },
+    holdingIndicator: {
+        fontSize: 12,
+        color: '#4CAF50',
+        marginTop: 2,
+        fontWeight: '500',
     },
     priceContainer: {
         marginTop: 20,
@@ -211,5 +296,30 @@ const styles = StyleSheet.create({
         // marginTop: 16,
         // marginBottom: 8,
         color: Colors.white
-    }
+    },
+    headerContainer: {
+        alignItems: 'center',
+        // paddingHorizontal: 10,
+    },
+    headerCompanyName: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: Colors.white,
+        textAlign: 'center',
+    },
+    headerPriceContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 8,
+        marginTop: 2,
+    },
+    headerPrice: {
+        fontSize: 14,
+        fontWeight: 'bold',
+        color: Colors.grey1,
+    },
+    headerChange: {
+        fontSize: 12,
+        fontWeight: '500',
+    },
 })

@@ -14,6 +14,7 @@ import { refetchUser } from '../../redux/actions/userAction'
 import { useAppDispatch, useAppSelector } from '../../redux/reduxHook';
 import { useNavigation } from '@react-navigation/native';
 import { Vibration } from 'react-native';
+import { BASE_URL } from '../../redux/API';
 
 export default function AddMoneyScreen() {
     const [amount, setAmount] = useState("");
@@ -92,7 +93,7 @@ export default function AddMoneyScreen() {
         }
         console.log("VAlues", values)
         try {
-            const res = await axios.post(`http://192.168.31.8:3000/api/razorpay/create-order`, values
+            const res = await axios.post(`${BASE_URL}/api/razorpay/create-order`, values
             )
             console.log("Response", res)
             const options = {
@@ -114,12 +115,11 @@ export default function AddMoneyScreen() {
             res && options && RazorpayCheckout?.open(options)
                 .then(async (paymentData) => {
                     // Success
-                    console.log('Payment Success', paymentData);
                     try {
-                        const response = await axios.post(`http://192.168.31.8:3000/api/razorpay/verify-order`, { ...paymentData, amount: values.amount, userId: user?._id })
+                        const response = await axios.post(`${BASE_URL}/api/razorpay/verify-order`, { ...paymentData, amount: values.amount, userId: user?._id })
                         console.log("Response after verification", response.data.success);
                         if (response.data.success) {
-                            navigation.replace('BottomTab', { screen: 'SettingScreen' });
+                            navigation.replace('BottomTab', { screen: 'Settings' });
                             dispatch(refetchUser())
                         }
                         setIsLoading(false);
