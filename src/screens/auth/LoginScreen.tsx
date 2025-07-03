@@ -1,23 +1,21 @@
-import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native'
+import { View, Text, TouchableOpacity, StyleSheet, Alert, Image, Dimensions } from 'react-native'
 import React, { FC, useEffect } from 'react'
 import CustomSafeAreaView from '../../components/global/CustomSafeAreaView'
 import CustomText from '../../components/global/CustomText'
 import { Colors } from '../../constants/Colors'
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import GoogleIcon from '../../components/global/GoogleIcon';
 import CustomView from '../../components/global/CustomView'
 import { useAppDispatch } from '../../redux/reduxHook'
 import { signInWithGoogle } from '../../redux/SocialLogin'
 import { GoogleSignin } from '@react-native-google-signin/google-signin'
+import LinearGradient from 'react-native-linear-gradient';
+
+const { width, height } = Dimensions.get('window');
 
 const LoginScreen:FC = () => {
 const dispatch = useAppDispatch();
-
-// useEffect(() => {
-//   GoogleSignin.configure({
-//     webClientId: process.env.GOOGLE_CLIENT_ID, // from Firebase
-//     offlineAccess: false, // if you need server auth code
-//   });
-// }, []);
 
 const handleGoogleLogin = async () => {
   try {
@@ -27,20 +25,75 @@ const handleGoogleLogin = async () => {
     console.log('Dispatch failed', e);
   }
 };
+
   return (
-    <CustomSafeAreaView >
+    <CustomSafeAreaView style={styles.container}>
+      <View style={styles.content}>
+        {/* Header Section */}
+        <View style={styles.headerSection}>
+          <View style={styles.logoContainer}>
+            <LinearGradient
+              colors={[Colors.primary, Colors.primaryDark]}
+              style={styles.logoGradient}
+            >
+              <Ionicons name="trending-up" size={40} color={Colors.white} />
+            </LinearGradient>
+          </View>
+          <CustomText varient='h1' style={styles.appTitle}>BrokerX</CustomText>
+          <CustomText varient='h4' style={styles.appSubtitle}>
+            Your Gateway to Smart Trading
+          </CustomText>
+        </View>
 
-      <CustomText varient='h1' style={{color:Colors.primaryLight}}>Login to STOCKX</CustomText>
-    {/* <CustomView style={styles.container}> */}
-     <TouchableOpacity style={styles.button} onPress={handleGoogleLogin} activeOpacity={0.8}>
-      <Icon name="google" size={20}  style={styles.icon} />
-      {/* <CustomText varient='h4' style={{color:Colors.background}}>Continue with Google</CustomText> */}
-    </TouchableOpacity>
-    {/* </CustomView> */}
+        {/* Main Content */}
+        <View style={styles.mainContent}>
+          <View style={styles.welcomeSection}>
+            <CustomText varient='h2' style={styles.welcomeTitle}>
+              Welcome Back
+            </CustomText>
+            <CustomText varient='h5' style={styles.welcomeSubtitle}>
+              Sign in to continue your trading journey
+            </CustomText>
+          </View>
 
-    <TouchableOpacity style={styles.button} onPress={() => { Alert.alert("Clicked");console.log('Pressed'); }} activeOpacity={0.8}>
-      <Text>Hello</Text>
-    </TouchableOpacity>
+          {/* Google Sign In Button */}
+          <TouchableOpacity 
+            style={styles.googleButton} 
+            onPress={handleGoogleLogin} 
+            activeOpacity={0.8}
+          >
+            <View style={styles.googleButtonContent}>
+              <GoogleIcon size={24} style={styles.googleIcon} />
+              <CustomText varient='h4' style={styles.googleButtonText}>
+                Continue with Google
+              </CustomText>
+            </View>
+          </TouchableOpacity>
+
+          {/* Features Section */}
+          <View style={styles.featuresSection}>
+            <View style={styles.featureItem}>
+              <Ionicons name="shield-checkmark" size={20} color={Colors.primary} />
+              <CustomText varient='h6' style={styles.featureText}>Secure & Protected</CustomText>
+            </View>
+            <View style={styles.featureItem}>
+              <Ionicons name="flash" size={20} color={Colors.primary} />
+              <CustomText varient='h6' style={styles.featureText}>Lightning Fast</CustomText>
+            </View>
+            <View style={styles.featureItem}>
+              <Ionicons name="analytics" size={20} color={Colors.primary} />
+              <CustomText varient='h6' style={styles.featureText}>Real-time Data</CustomText>
+            </View>
+          </View>
+        </View>
+
+        {/* Footer */}
+        <View style={styles.footer}>
+          <CustomText varient='h7' style={styles.footerText}>
+            By continuing, you agree to our Terms of Service and Privacy Policy
+          </CustomText>
+        </View>
+      </View>
     </CustomSafeAreaView>
   )
 }
@@ -48,30 +101,117 @@ const handleGoogleLogin = async () => {
 export default LoginScreen
 
 const styles = StyleSheet.create({
-  container:{
+  container: {
     flex: 1,
-    height: '100%',
-    width: '100%',
+    backgroundColor: Colors.background,
+  },
+  content: {
+    flex: 1,
+    paddingHorizontal: 24,
+    justifyContent: 'space-between',
+  },
+  headerSection: {
+    alignItems: 'center',
+    marginTop: height * 0.08,
+  },
+  logoContainer: {
+    marginBottom: 24,
+  },
+  logoGradient: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
     alignItems: 'center',
     justifyContent: 'center',
+    shadowColor: Colors.primary,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 12,
+    elevation: 8,
   },
-  button: {
-    flexDirection: 'row',
-    backgroundColor: '#fff',
-    borderColor: '#ccc',
+  appTitle: {
+    color: Colors.white,
+    fontWeight: 'bold',
+    marginBottom: 8,
+    textAlign: 'center',
+  },
+  appSubtitle: {
+    color: Colors.grey1,
+    textAlign: 'center',
+    opacity: 0.8,
+  },
+  mainContent: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  welcomeSection: {
+    alignItems: 'center',
+    marginBottom: 40,
+  },
+  welcomeTitle: {
+    color: Colors.white,
+    fontWeight: 'bold',
+    marginBottom: 8,
+    textAlign: 'center',
+  },
+  welcomeSubtitle: {
+    color: Colors.grey2,
+    textAlign: 'center',
+    lineHeight: 22,
+  },
+  googleButton: {
+    backgroundColor: Colors.white,
+    borderRadius: 16,
+    paddingVertical: 16,
+    paddingHorizontal: 24,
+    width: width * 0.85,
+    maxWidth: 320,
+    shadowColor: Colors.primary,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 12,
+    elevation: 6,
     borderWidth: 1,
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    borderRadius: 10,
+    borderColor: Colors.grey4,
+  },
+  googleButtonContent: {
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    elevation: 3, // for Android shadow
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
   },
-  icon: {
-    marginRight: 10,
+  googleIcon: {
+    marginRight: 12,
+  },
+  googleButtonText: {
+    color: Colors.background,
+    fontWeight: '600',
+  },
+  featuresSection: {
+    marginTop: 48,
+    width: '100%',
+    maxWidth: 300,
+  },
+  featureItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+    paddingHorizontal: 16,
+  },
+  featureText: {
+    color: Colors.grey1,
+    marginLeft: 12,
+    opacity: 0.9,
+  },
+  footer: {
+    alignItems: 'center',
+    paddingBottom: 24,
+    paddingHorizontal: 16,
+  },
+  footerText: {
+    color: Colors.grey3,
+    textAlign: 'center',
+    lineHeight: 18,
+    opacity: 0.8,
   },
 });

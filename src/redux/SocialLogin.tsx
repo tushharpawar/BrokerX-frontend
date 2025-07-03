@@ -1,10 +1,13 @@
 import {Alert} from 'react-native'
 import {navigate, resetAndNavigate} from '../utils/NavigationUtils'
-import {setUser} from './reducers/userSlice'
+import {setUser, clearUser} from './reducers/userSlice'
+import {setStocks} from './reducers/stockSlice'
+import {setHoldings} from './reducers/holdingSlice'
 import {token_storage} from './storage'
 import {GoogleSignin} from '@react-native-google-signin/google-signin'
 import axios from 'axios'
 import {LOGIN} from './API'
+import {persistor} from './store'
 
 interface RegisterData {
   id_token: string
@@ -65,6 +68,47 @@ export const signInWithGoogle = () => async (dispatch: any) => {
   } catch (error) {
     console.log('Google signin error.', error);
     Alert.alert('Google Sign-In failed. Please try again.')
+  }
+}
+
+export const signOutUser = () => async (dispatch: any) => {
+  try {
+    // Sign out from Google
+    await GoogleSignin.signOut()
+    
+    // Clear tokens from storage
+    token_storage.delete('access_token')
+    token_storage.delete('referesh_token')
+    
+    // Clear all Redux state
+    dispatch(clearUser())
+    dispatch(setStocks([]))
+    dispatch(setHoldings([]))
+    
+    // Purge persisted data
+    await persistor.purge()
+    
+    // Navigate to login screen
+    resetAndNavigate('LoginScreen')
+    
+    console.log('User signed out successfully')
+  } catch (error) {
+    console.log('Error during sign out:', error)
+    // Even if Google signout fails, still clear local data and navigate
+    token_storage.delete('access_token')
+    token_storage.delete('referesh_token')
+    dispatch(clearUser())
+    dispatch(setStocks([]))
+    dispatch(setHoldings([]))
+    
+    // Try to purge persisted data even on error
+    try {
+      await persistor.purge()
+    } catch (purgeError) {
+      console.log('Error purging persistor:', purgeError)
+    }
+    
+    resetAndNavigate('LoginScreen')
   }
 }
 

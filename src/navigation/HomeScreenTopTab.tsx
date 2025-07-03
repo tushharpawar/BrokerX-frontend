@@ -4,7 +4,6 @@ import { StyleSheet, Text, View } from 'react-native'
 import { Colors } from '../constants/Colors';
 import HomeScreen from '../screens/home/HomeScreen';
 import HoldingsScreen from '../screens/holdings/HoldingsScreen';
-import WatchlistScreen from '../screens/watchlist/WatchlistScreen';
 import { useAppDispatch } from '../redux/reduxHook';
 import { useSelector } from 'react-redux';
 import { getHoldingsAction } from '../redux/actions/buyAction';
@@ -35,7 +34,6 @@ const HomeScreenTopTab = () => {
     >
         <TopTab.Screen name='Stocks' component={HomeScreen}/>
         <TopTab.Screen name='Holdings' component={HoldingsScreen}/>
-        <TopTab.Screen name='Watchlist' component={WatchlistScreen}/>
     </TopTab.Navigator>
   )
 }

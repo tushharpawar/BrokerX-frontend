@@ -74,8 +74,21 @@ const StocksDetails = ({ route }: any) => {
     const previousClosePrice = stock?.prevClose || profile?.close;
 
     const { price } = useStockLivePrice(symbol);
-    const change = price!  - previousClosePrice;
-    const changePercent = (change / previousClosePrice) * 100;
+    
+    const currentPrice = price || stock?.price || previousClosePrice || 0;
+    
+    let change = 0;
+    let changePercent = 0;
+    
+    if (stock?.change && stock?.changePercent) {
+        // Use provided change data if available
+        change = parseFloat(stock.change);
+        changePercent = parseFloat(stock.changePercent.replace('%', ''));
+    } else if (currentPrice && previousClosePrice && currentPrice !== previousClosePrice) {
+        // Calculate change from current price and previous close
+        change = currentPrice - previousClosePrice;
+        changePercent = (change / previousClosePrice) * 100;
+    }
 
     const handleScroll = Animated.event(
         [{ nativeEvent: { contentOffset: { y: scrollY } } }],
@@ -91,7 +104,6 @@ const StocksDetails = ({ route }: any) => {
         }
     );
 
-    // Update navigation header based on scroll position
     useEffect(() => {
         navigation.setOptions({
             headerShown: showHeaderContent,
@@ -102,13 +114,13 @@ const StocksDetails = ({ route }: any) => {
                     </Text>
                     <View style={styles.headerPriceContainer}>
                         <Text style={styles.headerPrice}>
-                            ${price ? price.toFixed(2) : stock?.price}
+                            ${currentPrice.toFixed(2)}
                         </Text>
                         <Text style={[
                             styles.headerChange, 
                             { color: change < 0 ? '#ff4d4f' : '#4CAF50' }
                         ]}>
-                            {change ? change.toFixed(2) : stock?.change} ({changePercent ? changePercent.toFixed(2) : stock?.changePercent}%)
+                            {change >= 0 ? '+' : ''}{change.toFixed(2)} ({change >= 0 ? '+' : ''}{changePercent.toFixed(2)}%)
                         </Text>
                     </View>
                 </View>
@@ -118,7 +130,7 @@ const StocksDetails = ({ route }: any) => {
             },
             headerTintColor: Colors.white,
         });
-    }, [navigation, showHeaderContent, stock, price, change, changePercent]);
+    }, [navigation, showHeaderContent, stock, currentPrice, change, changePercent]);
 
     const navigateToBuyScreen = () => {
         navigation.navigate('BuyScreen', { stock, headerShown: true });
@@ -165,14 +177,15 @@ const StocksDetails = ({ route }: any) => {
                                 alignItems: 'center',
                             }}
                         >
-                            <FontAwesome name="bookmark-o" size={24} color={Colors.white} />
                             <IonIcons name="alarm-outline" size={26} color={Colors.white} style={{ marginLeft: 10 }} />
                         </View>
                     </View>
 
                     <View style={styles.priceContainer}>
-                        <Text style={styles.priceText}>${price ? price : stock?.price}</Text>
-                        <Text style={[styles.changeText, change < 0 ? { color: 'tomato' } : { color: 'limegreen' }]}>{change ? change.toFixed(2) : stock?.change} ({changePercent ? changePercent.toFixed(2) : stock?.changePercent}%)</Text>
+                        <Text style={styles.priceText}>${currentPrice.toFixed(2)}</Text>
+                        <Text style={[styles.changeText, change < 0 ? { color: 'tomato' } : { color: 'limegreen' }]}>
+                            {change >= 0 ? '+' : ''}{change.toFixed(2)} ({change >= 0 ? '+' : ''}{changePercent.toFixed(2)}%)
+                        </Text>
                     </View>
 
                     <MiniChart symbol={symbol} color={change > 0 ? 'limegreen' : 'tomato'} />
@@ -180,10 +193,10 @@ const StocksDetails = ({ route }: any) => {
                     <View>
                         <Text style={styles.title}>Performance</Text>
                         <Text style={[styles.label,{marginTop:5}]}>1D Range</Text>
-                        <RangeBar low={profile?.low} high={profile?.high} current={price ? price : stock?.price} />
+                        <RangeBar low={profile?.low} high={profile?.high} current={currentPrice} />
 
                         <Text style={[styles.label,{marginTop:5}]}>52W Range</Text>
-                        <RangeBar low={profile?.fifty_two_week.low} high={profile?.fifty_two_week.high} current={price ? price : stock?.price} />
+                        <RangeBar low={profile?.fifty_two_week.low} high={profile?.fifty_two_week.high} current={currentPrice} />
 
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 16 }}>
                             <View>

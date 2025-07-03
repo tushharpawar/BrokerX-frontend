@@ -1,5 +1,5 @@
 import { ActivityIndicator, Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import Animated, {
     useSharedValue,
     useAnimatedStyle,
@@ -12,7 +12,7 @@ import axios from 'axios'
 import RazorpayCheckout from 'react-native-razorpay';
 import { refetchUser } from '../../redux/actions/userAction'
 import { useAppDispatch, useAppSelector } from '../../redux/reduxHook';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { Vibration } from 'react-native';
 import { BASE_URL } from '../../redux/API';
 
@@ -23,6 +23,27 @@ export default function AddMoneyScreen() {
     const { user } = useAppSelector((state) => state?.user);
     const dispatch = useAppDispatch();
     const navigation = useNavigation<any>();
+
+    // Set header options
+    useEffect(() => {
+        navigation.setOptions({
+            headerShown: true,
+            title: 'Add Money',
+            headerStyle: {
+                backgroundColor: Colors.background,
+            },
+            headerTintColor: Colors.white,
+            headerTitleStyle: {
+                fontWeight: 'bold',
+            },
+        });
+    }, [navigation]);
+
+    useFocusEffect(
+        useCallback(() => {
+            dispatch(refetchUser());
+        }, [dispatch])
+    );
 
     const scale = useSharedValue(1);
 
@@ -91,7 +112,6 @@ export default function AddMoneyScreen() {
         const values = {
             amount: parseFloat(amount),
         }
-        console.log("VAlues", values)
         try {
             const res = await axios.post(`${BASE_URL}/api/razorpay/create-order`, values
             )
@@ -215,7 +235,8 @@ export default function AddMoneyScreen() {
                                 paddingVertical: 15,
                                 // paddingHorizontal: 30,
                                 borderRadius: 10,
-                                marginTop: 20,
+                                alignItems: "center",
+                                // marginTop: 20,
                             }, error.length > 0 || amount.trim() == "" || amount == "0" ? { opacity: 0.3 } : {}]}
                             onPress={() => {
                                 Vibration.vibrate(50);

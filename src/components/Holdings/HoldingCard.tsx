@@ -9,7 +9,7 @@ const HoldingCard = ({ symbol, quantity, avgPrice,currentPrice,logo,prevClose,co
 
   const navigation = useNavigation()  
   const investedValue = avgPrice * quantity;
-  const safeCurrentPrice = currentPrice! ;
+  const safeCurrentPrice = currentPrice || 0;
   const currentValue = safeCurrentPrice * quantity;
   const pnl = currentValue - investedValue;
   const pnlPercent = ((pnl / investedValue) * 100).toFixed(2);
@@ -17,8 +17,8 @@ const HoldingCard = ({ symbol, quantity, avgPrice,currentPrice,logo,prevClose,co
 
   let stock = {
     symbol,
-    price,
-    change,
+    price: currentPrice,
+    change: change,
     companyName,
     logo,
     prevClose,
@@ -26,7 +26,7 @@ const HoldingCard = ({ symbol, quantity, avgPrice,currentPrice,logo,prevClose,co
   }
 
   const navigaeToProductDetails = () => {
-    navigation.navigate('StocksDetails',{stock});
+    (navigation as any).navigate('StocksDetails',{stock});
   }
 
   return (

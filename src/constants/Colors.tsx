@@ -48,7 +48,7 @@ export const Colors = {
   lavender20:     '#9C88FF33',
 
   /* card colors */
-  cardBackground: '#1e1e1e',
+  cardBackground: '#14141C',
 } as const;
 
 export type ColorKeys = keyof typeof Colors;

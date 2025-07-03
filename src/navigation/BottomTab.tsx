@@ -1,6 +1,6 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import { FC, useEffect } from 'react';
-import HomeScreen from '../screens/home/HomeScreen';
+import HomeContainer from '../screens/home/HomeContainer';
 import SearchScreen from '../screens/search/SearchScreen';
 import NewsScreen from '../screens/news/NewsScreen';
 import SettingScreen from '../screens/settings/SettingScreen';
@@ -11,7 +11,6 @@ import { Colors} from '../constants/Colors';
 import { fetchStocks } from '../redux/actions/stockAction';
 import { useAppDispatch } from '../redux/reduxHook';
 import useLiveStocks from '../hooks/useLiveStocks';
-import HomeScreenTopTab from './HomeScreenTopTab';
 
 const Tab = createBottomTabNavigator();
 
@@ -29,13 +28,12 @@ const BottomTab:FC =()=>{
             headerShown: false,
             tabBarHideOnKeyboard:true,
             tabBarStyle:{
-                paddingTop:Platform.OS === 'ios' ? RFValue(10) : RFValue(5),
-                paddingBottom:Platform.OS === 'ios' ? 20 : 10,
+                paddingTop:Platform.OS === 'ios' ? RFValue(8) : RFValue(8),
+                paddingBottom:Platform.OS === 'ios' ? RFValue(10) : RFValue(10),
                 backgroundColor:Colors.tabBackground,
                 borderColor:Colors.tabBorder,
-                position:'absolute',
-                height:Platform.OS==='android'? 70 : 90,
-                borderTopWidth:0,
+                borderTopWidth:1,
+                height:Platform.OS==='android'? RFValue(65) : RFValue(60),
             },    
             tabBarActiveTintColor: Colors.tabActive,
             tabBarInactiveTintColor: Colors.tabInactive,  
@@ -44,7 +42,7 @@ const BottomTab:FC =()=>{
         >
             <Tab.Screen
             name='Home'
-            component={HomeScreenTopTab}
+            component={HomeContainer}
             options={{
                 tabBarIcon: ({focused}) => (
                     focused ? <Ionicons name='home' size={RFValue(20)} color={Colors.tabActive} /> : <Ionicons name='home-outline' size={RFValue(20)} color={Colors.tabInactive} />
