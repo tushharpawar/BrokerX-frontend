@@ -58,7 +58,6 @@ const SplashScreen:FC = () => {
     resetAndNavigate('LoginScreen');
   }
 
-  // This function should be implemented to check the token
   useEffect(() => {
     async function deeplLinks(){
       await checkToken()
@@ -67,8 +66,6 @@ const SplashScreen:FC = () => {
     deeplLinks();
   }, [])
 
-
-  //Animation to scale the logo up and down
 
   useEffect(() => {
     const breathingAnimation = Animated.loop(

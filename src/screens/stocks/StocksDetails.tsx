@@ -15,8 +15,9 @@ import BuyButton from '../../components/Buy/BuyButton';
 import { useNavigation } from '@react-navigation/native';
 import { useAppSelector } from '../../redux/reduxHook';
 import { checkIfUserOwnsStock, getUserHoldingForStock } from '../../utils/functions/holdingsHelper';
+import { TWELVE_DATA_API_KEY } from '@env';
 
-const TOKEN = 'ed0ff8bd51a44ef7b5a59c5014a890b1';
+const  TOKEN = TWELVE_DATA_API_KEY ;
 
 const StocksDetails = ({ route }: any) => {
     const [profile, setProfile] = useState<any>(null);

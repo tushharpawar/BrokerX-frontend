@@ -20,10 +20,8 @@ const SettingScreen: FC = () => {
   const navigation = useNavigation<any>()
   const [isLoggingOut, setIsLoggingOut] = useState(false)
 
-  // Refresh user data when screen comes into focus
   useFocusEffect(
     useCallback(() => {
-      // Check if user is logged in, if not redirect to login
       if (!user) {
         resetAndNavigate('LoginScreen');
         return;
@@ -32,9 +30,8 @@ const SettingScreen: FC = () => {
     }, [dispatch, user])
   );
 
-  // Early return if no user data (after hooks)
   if (!user) {
-    return null; // Or a loading spinner
+    return null; 
   }
 
   const handlePayment = async () => {

@@ -15,6 +15,7 @@ import { useAppDispatch, useAppSelector } from '../../redux/reduxHook';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { Vibration } from 'react-native';
 import { BASE_URL } from '../../redux/API';
+import { RAZORPAY_KEY } from '@env';
 
 export default function AddMoneyScreen() {
     const [amount, setAmount] = useState("");
@@ -120,7 +121,7 @@ export default function AddMoneyScreen() {
                 description: 'Test Order',
                 image: "https://res.cloudinary.com/ddprwohnl/image/upload/v1724407337/glitchover/uhtdofbij5srb8vhnbpl.jpg",
                 currency: 'USD',
-                key: 'rzp_test_z0XaRDc2OcfMLm',
+                key: RAZORPAY_KEY,
                 amount: res.data.amount,
                 order_id: res.data.id,
                 name: 'StockX',
@@ -134,7 +135,6 @@ export default function AddMoneyScreen() {
 
             res && options && RazorpayCheckout?.open(options)
                 .then(async (paymentData) => {
-                    // Success
                     try {
                         const response = await axios.post(`${BASE_URL}/api/razorpay/verify-order`, { ...paymentData, amount: values.amount, userId: user?._id })
                         console.log("Response after verification", response.data.success);
@@ -152,7 +152,6 @@ export default function AddMoneyScreen() {
                     }
                 })
                 .catch((error) => {
-                    // Failure
                     setIsLoading(false);
                     console.log('Payment Failed', error);
                     Alert.alert('Error', error.description);
@@ -189,7 +188,6 @@ export default function AddMoneyScreen() {
                     </View>
                 </View>
 
-                {/* Custom NumPad */}
                 <View
                     style={{ height: '50%', marginTop: 20, bottom: 10, position: 'absolute' }}
                 >

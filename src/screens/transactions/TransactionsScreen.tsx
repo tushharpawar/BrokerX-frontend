@@ -27,7 +27,6 @@ const TransactionsScreen = () => {
     const [nextCursor, setNextCursor] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
 
-    // Set header options
     useEffect(() => {
         navigation.setOptions({
             headerShown: true,

@@ -20,7 +20,7 @@ const MainNavigation:FC = () => {
           component={Screen.component}
           options={({ route }) => ({
             title: route?.params?.title || null,
-            headerShown: route?.params?.headerShown || false, // Show header unless explicitly set to false
+            headerShown: route?.params?.headerShown || false, 
             headerStyle: {
               backgroundColor: Colors.background,
             },

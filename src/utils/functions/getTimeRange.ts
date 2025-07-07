@@ -1,7 +1,8 @@
 import dayjs from "dayjs";
 import axios from "axios";
+import { TWELVE_DATA_API_KEY } from "@env";
 
-const API_KEY = "ed0ff8bd51a44ef7b5a59c5014a890b1";
+const API_KEY = TWELVE_DATA_API_KEY;
 
 export const getTimeRange = async (symbol: string, filter: "1D" | "1W" | "1M" | "1Y" | "5Y") => {
   let resolution;

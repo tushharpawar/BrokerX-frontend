@@ -36,7 +36,6 @@ export default function WithdrawMoneyScreen() {
 
     const scale = useSharedValue(1);
 
-    // Set header options
     useEffect(() => {
         navigation.setOptions({
             headerShown: true,
@@ -51,7 +50,6 @@ export default function WithdrawMoneyScreen() {
         });
     }, [navigation]);
 
-    // Refresh user data when screen comes into focus
     useFocusEffect(
         useCallback(() => {
             dispatch(refetchUser());
@@ -136,10 +134,8 @@ export default function WithdrawMoneyScreen() {
                 setWithdrawalData(response.data.transaction);
                 setShowSuccessModal(true);
                 setAmount("");
-                
-                // Add a small delay to ensure backend processing is complete
                 setTimeout(() => {
-                    dispatch(refetchUser()); // Update user balance
+                    dispatch(refetchUser()); 
                 }, 500);
             } else {
                 Alert.alert('Error', response.data.message || 'Withdrawal failed');
@@ -155,7 +151,6 @@ export default function WithdrawMoneyScreen() {
     const closeSuccessModal = () => {
         setShowSuccessModal(false);
         setWithdrawalData(null);
-        // Refresh user data when modal closes
         dispatch(refetchUser());
     };
 
@@ -207,7 +202,6 @@ export default function WithdrawMoneyScreen() {
                     </View>
                 </View>
 
-                {/* Custom NumPad */}
                 <View style={styles.keypadContainer}>
                     <View style={styles.keypad}>
                         {[
@@ -264,7 +258,6 @@ export default function WithdrawMoneyScreen() {
                 </View>
             </View>
 
-            {/* Success Modal */}
             <Modal
                 visible={showSuccessModal}
                 transparent={true}

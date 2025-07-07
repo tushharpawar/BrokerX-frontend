@@ -77,3 +77,8 @@ yarn-error.log
 #google-services.json
 google-services.json
 GoogleService-Info.plist
+
+.env
+.env.*
+.env.local
+.env.development

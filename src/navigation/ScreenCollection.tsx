@@ -1,4 +1,3 @@
-import { Component } from "react";
 import LoginScreen from "../screens/auth/LoginScreen";
 import SplashScreen from "../screens/auth/SplashScreen";
 import CatogaryStocksScreen from "../screens/home/CatogaryStocksScreen";
@@ -12,11 +11,9 @@ import BuyScreen from "../screens/buy/BuyScreen";
 import SellScreen from "../screens/buy/SellScreen";
 import OrdersScreen from "../screens/orders/OrdersScreen";
 import TransactionsScreen from "../screens/transactions/TransactionsScreen";
-import { compose } from "redux";
 import HoldingsScreen from "../screens/holdings/HoldingsScreen";
 import WatchlistScreen from "../screens/watchlist/WatchlistScreen";
 import NewsDetailsScreen from "../screens/news/NewsDetailsScreen";
-import HomeScreenTopTab from "./HomeScreenTopTab";
 
 export const authStack = [
     {
@@ -37,10 +34,6 @@ export const bottomTabStack = [
 ]
 
 export const homeStack = [
-    // {
-    //     name:'HomeScreenTopTab',
-    //     component:HomeScreenTopTab
-    // },
     {
         name:'HomeScreen',
         component:HomeScreen

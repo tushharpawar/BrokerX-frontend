@@ -1,5 +1,6 @@
 import { Storage } from "redux-persist";
 import { MMKV } from 'react-native-mmkv';
+import { RSA_ENCRYPTION_KEY } from '@env';
 
 // Initialize MMKV storage
 const storage = new MMKV();
@@ -7,7 +8,7 @@ const storage = new MMKV();
 // Optional: If you need encryption, configure it here
 export const token_storage = new MMKV({
     id: "user-storage",
-    encryptionKey: "RSA_KEY"
+    encryptionKey: RSA_ENCRYPTION_KEY
 });
 
 const reduxStorage: Storage = {

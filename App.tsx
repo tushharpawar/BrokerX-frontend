@@ -8,9 +8,10 @@ import { persistor, store } from './src/redux/store';
 import { PersistGate } from 'redux-persist/integration/react';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import CustomSafeAreaView from './src/components/global/CustomSafeAreaView';
+import { GOOGLE_WEB_CLIENT_ID } from '@env';
 
 GoogleSignin.configure({
-  webClientId: '502659074621-3hb7re7m5v9vibimb01ifte1tmfs0bmj.apps.googleusercontent.com',
+  webClientId: GOOGLE_WEB_CLIENT_ID,
   offlineAccess: true,
   scopes: ['profile', 'email'],
 });

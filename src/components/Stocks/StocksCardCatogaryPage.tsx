@@ -1,8 +1,6 @@
-import { Dimensions, Image, StyleSheet, Text, Touchable, TouchableOpacity, View } from 'react-native'
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
-import CustomView from '../global/CustomView'
 import { Colors } from '../../constants/Colors';
-import Navigation from '../../navigation/Navigation';
 import { useNavigation } from '@react-navigation/native';
 
 
@@ -18,8 +16,6 @@ interface StocksCardCatogaryProps {
   };
 }
 
-
-//Stock category page card component
 const StocksCardCatogaryPage: React.FC<StocksCardCatogaryProps> = ({ item }) => {
   const navigation = useNavigation<any>()
     const previousClosePrice = item?.prevClose

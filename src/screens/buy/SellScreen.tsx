@@ -85,9 +85,6 @@ const SellScreen = ({ route, navigation }: any) => {
         
         try {
             const res = await sellHoldingsAction(values);
-            console.log("Sell action response:", res);
-            
-            // Refresh user data and holdings after successful sale
             await dispatch(refetchUser());
             await dispatch(getHoldingsAction({ userId: user._id }));
             
@@ -129,7 +126,6 @@ const SellScreen = ({ route, navigation }: any) => {
                 borderRadius: 12,
                 paddingVertical:12,
                 paddingHorizontal: 14,
-                // marginBottom: 20,
                 borderWidth: 1,
                 borderColor: Colors.tabBorder,
             }}>

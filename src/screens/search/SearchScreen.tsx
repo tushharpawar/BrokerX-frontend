@@ -74,11 +74,9 @@ const SearchScreen: FC = () => {
   };
 
   const handleStockPress = (stock: StockItem) => {
-    // Add to recent searches
     const updatedRecentSearches = [stock.symbol, ...recentSearches.filter(s => s !== stock.symbol)].slice(0, 5);
     setRecentSearches(updatedRecentSearches);
-    
-    // Prepare stock data with proper price calculations
+
     const currentPrice = stock.price || stock.prevClose || 0;
     const prevClose = stock.prevClose || 0;
     
@@ -106,7 +104,6 @@ const SearchScreen: FC = () => {
     
     navigation.navigate('StocksDetails', { stock: stockData });
     
-    // Clear search
     setSearchQuery('');
     setShowResults(false);
     Keyboard.dismiss();
@@ -125,22 +122,18 @@ const SearchScreen: FC = () => {
   };
 
   const renderStockItem = ({ item }: { item: StockItem }) => {
-    // Use price from item if available, otherwise use prevClose
     const currentPrice = item.price || item.prevClose || 0;
     const prevClose = item.prevClose || 0;
-    
-    // Calculate change and change percentage
+
     let change = 0;
     let changePercent = '0%';
     let isPositive = true;
     
     if (item.change && item.changePercent) {
-      // Use provided change data if available
       change = parseFloat(item.change);
       changePercent = item.changePercent;
       isPositive = change >= 0;
     } else if (currentPrice && prevClose && currentPrice !== prevClose) {
-      // Calculate change from current price and previous close
       change = currentPrice - prevClose;
       const changePercentValue = (change / prevClose) * 100;
       changePercent = `${changePercentValue.toFixed(2)}%`;
@@ -155,7 +148,6 @@ const SearchScreen: FC = () => {
         style={styles.stockItem} 
         onPress={() => handleStockPress(item)}
       >
-        {/* Header with logo, symbol and price change */}
         <View style={styles.stockHeader}>
           <View style={styles.stockHeaderLeft}>
             {item.logo && (
@@ -192,7 +184,6 @@ const SearchScreen: FC = () => {
           )}
         </View>
 
-        {/* Additional data row */}
         {(hasPrice || prevClose > 0) && (
           <View style={styles.stockDataRow}>
             {prevClose > 0 && (
@@ -213,7 +204,6 @@ const SearchScreen: FC = () => {
           </View>
         )}
 
-        {/* Simple layout for items without price data */}
         {!hasPrice && prevClose <= 0 && (
           <View style={styles.simpleStockFooter}>
             <Ionicons name="chevron-forward" size={20} color={Colors.grey2} />
@@ -246,10 +236,8 @@ const SearchScreen: FC = () => {
   return (
     <CustomView>
       <View style={styles.container}>
-        {/* Header */}
         <Text style={styles.title}>Search Stocks</Text>
-        
-        {/* Search Bar */}
+
         <View style={styles.searchContainer}>
           <Ionicons name="search" size={20} color={Colors.grey2} style={styles.searchIcon} />
           <TextInput
@@ -268,7 +256,6 @@ const SearchScreen: FC = () => {
           )}
         </View>
 
-        {/* Loading Indicator */}
         {loading && (
           <View style={styles.loadingContainer}>
             <ActivityIndicator size="small" color={Colors.primary} />
@@ -276,7 +263,6 @@ const SearchScreen: FC = () => {
           </View>
         )}
 
-        {/* Search Results */}
         {showResults && searchResults.length > 0 && (
           <View style={styles.resultsContainer}>
             <Text style={styles.sectionTitle}>Search Results</Text>
@@ -290,7 +276,6 @@ const SearchScreen: FC = () => {
           </View>
         )}
 
-        {/* No Results */}
         {showResults && searchResults.length === 0 && !loading && searchQuery.length > 1 && (
           <View style={styles.noResultsContainer}>
             <Ionicons name="search-outline" size={48} color={Colors.grey2} />
@@ -299,7 +284,6 @@ const SearchScreen: FC = () => {
           </View>
         )}
 
-        {/* Recent Searches */}
         {!showResults && recentSearches.length > 0 && (
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Recent Searches</Text>
@@ -312,7 +296,6 @@ const SearchScreen: FC = () => {
           </View>
         )}
 
-        {/* Popular Stocks */}
         {!showResults && (
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Popular Stocks</Text>

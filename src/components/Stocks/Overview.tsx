@@ -1,4 +1,3 @@
-// OverviewScreen.js
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
 import { BarChart } from 'react-native-chart-kit';

@@ -1,4 +1,3 @@
-// components/RangeBar.tsx
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Colors } from '../../constants/Colors';
@@ -39,7 +38,7 @@ const styles = StyleSheet.create({
     top: -6,
     width: 10,
     height: 14,
-    backgroundColor: Colors.primary, // lavender
+    backgroundColor: Colors.primary, 
     borderRadius: 5,
   },
   range: {

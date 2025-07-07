@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.background,
     },
     listContainer: {
-        paddingBottom: 60, // Account for bottom tab bar
+        paddingBottom: 60,
     },
     headerContainer: {
         paddingHorizontal: 16,

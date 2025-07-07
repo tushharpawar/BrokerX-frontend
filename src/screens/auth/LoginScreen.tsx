@@ -1,15 +1,12 @@
-import { View, Text, TouchableOpacity, StyleSheet, Alert, Image, Dimensions } from 'react-native'
-import React, { FC, useEffect } from 'react'
+import { View, TouchableOpacity, StyleSheet, Dimensions } from 'react-native'
+import React, { FC } from 'react'
 import CustomSafeAreaView from '../../components/global/CustomSafeAreaView'
 import CustomText from '../../components/global/CustomText'
 import { Colors } from '../../constants/Colors'
-import Icon from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import GoogleIcon from '../../components/global/GoogleIcon';
-import CustomView from '../../components/global/CustomView'
 import { useAppDispatch } from '../../redux/reduxHook'
 import { signInWithGoogle } from '../../redux/SocialLogin'
-import { GoogleSignin } from '@react-native-google-signin/google-signin'
 import LinearGradient from 'react-native-linear-gradient';
 
 const { width, height } = Dimensions.get('window');
@@ -45,7 +42,6 @@ const handleGoogleLogin = async () => {
           </CustomText>
         </View>
 
-        {/* Main Content */}
         <View style={styles.mainContent}>
           <View style={styles.welcomeSection}>
             <CustomText varient='h2' style={styles.welcomeTitle}>
@@ -56,7 +52,6 @@ const handleGoogleLogin = async () => {
             </CustomText>
           </View>
 
-          {/* Google Sign In Button */}
           <TouchableOpacity 
             style={styles.googleButton} 
             onPress={handleGoogleLogin} 
@@ -70,7 +65,6 @@ const handleGoogleLogin = async () => {
             </View>
           </TouchableOpacity>
 
-          {/* Features Section */}
           <View style={styles.featuresSection}>
             <View style={styles.featureItem}>
               <Ionicons name="shield-checkmark" size={20} color={Colors.primary} />
@@ -87,7 +81,6 @@ const handleGoogleLogin = async () => {
           </View>
         </View>
 
-        {/* Footer */}
         <View style={styles.footer}>
           <CustomText varient='h7' style={styles.footerText}>
             By continuing, you agree to our Terms of Service and Privacy Policy

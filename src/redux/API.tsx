@@ -1,9 +1,10 @@
-export const BASE_URL ='http://192.168.31.195:5000'
+import { BASE_URL, GIPHY_API_KEY } from '@env';
+
 export const REGISTER = `${BASE_URL}/oauth/register`;
 export const LOGIN = `${BASE_URL}/oauth/login`;
 export const REFRESH_TOKEN = `${BASE_URL}/oauth/refresh-token`;
 export const UPLOAD = `${BASE_URL}/file/upload`;
-export const GIPHY_API_KEY = ` wPfm99jgfnB9x403FMT0IjIFyUWVmV4e`;
+export { GIPHY_API_KEY };
 export const GET_STOCKS = `${BASE_URL}/api/stocks`;
 export const BUY_HOLDINGS = `${BASE_URL}/api/holdings/buy`;
 export const SELL_HOLDINGS = `${BASE_URL}/api/holdings/sell`;
@@ -14,3 +15,6 @@ export const GET_GENERAL_NEWS = `${BASE_URL}/api/news`;
 export const GET_TRENDING_NEWS = `${BASE_URL}/api/news/trending`;
 export const SEARCH_STOCKS = `${BASE_URL}/api/search/suggestions`;
 export const GET_STOCK_QUOTE = `${BASE_URL}/api/stocks/quote`;
+
+// Export BASE_URL for direct use
+export { BASE_URL };
