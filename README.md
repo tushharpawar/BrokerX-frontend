@@ -20,7 +20,6 @@ BrokerX is a real-time stock trading backend application designed to simulate fe
 - **Razorpay Integration**
 - **Google OAuth 2.0**
 - **Alpaca,Twelve Data API , Financial Modeling Prep API & Finnhub APIs** for stock data
-- 
 ---
 
 ## 📲 Tech Stack (Frontend - React Native CLI)
