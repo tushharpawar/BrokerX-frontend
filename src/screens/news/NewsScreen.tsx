@@ -10,7 +10,7 @@ import {
   RefreshControl,
   Alert,
 } from 'react-native';
-import CustomView from '../../components/global/CustomView';
+import CustomSafeAreaView from '../../components/global/CustomSafeAreaView';
 import { Colors } from '../../constants/Colors';
 import { GET_GENERAL_NEWS, GET_TRENDING_NEWS } from '../../redux/API';
 import axios from 'axios';
@@ -119,7 +119,7 @@ const NewsScreen: FC = () => {
   const currentNews = activeTab === 'general' ? generalNews : trendingNews;
 
   return (
-    <CustomView>
+    <CustomSafeAreaView>
       <View style={styles.container}>
         <Text style={styles.title}>News</Text>
         
@@ -174,7 +174,7 @@ const NewsScreen: FC = () => {
           />
         )}
       </View>
-    </CustomView>
+    </CustomSafeAreaView>
   );
 };
 

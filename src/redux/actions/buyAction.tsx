@@ -1,5 +1,5 @@
 import { appAxios } from '../apiConfig';
-import { BASE_URL, BUY_HOLDINGS } from '../API';
+import { API_BASE_URL, BUY_HOLDINGS } from '../API';
 import { setHoldings } from '../reducers/holdingSlice';
 
 export const buyHoldingsAction = async (values:any) => {
@@ -14,7 +14,7 @@ export const buyHoldingsAction = async (values:any) => {
 
 export const getHoldingsAction = ({userId}:any)=>async (dispatch:any) => {
     try {
-        const response = await appAxios.get(`${BASE_URL}/api/holdings/user/${userId}`);
+        const response = await appAxios.get(`${API_BASE_URL}/api/holdings/user/${userId}`);
         console.log("Response from getHoldingsAction:", response.data);
         await dispatch(setHoldings(response.data.holdings));
         return response.data;

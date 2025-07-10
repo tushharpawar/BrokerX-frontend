@@ -1,6 +1,6 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity, Alert } from 'react-native'
 import React, { FC, use, useState, useCallback } from 'react'
-import CustomView from '../../components/global/CustomView'
+import CustomSafeAreaView from '../../components/global/CustomSafeAreaView'
 import { Colors } from '../../constants/Colors'
 import { useAppDispatch, useAppSelector } from '../../redux/reduxHook'
 import { refetchUser } from '../../redux/actions/userAction'
@@ -79,7 +79,7 @@ const SettingScreen: FC = () => {
   }
 
   return (
-    <CustomView>
+    <CustomSafeAreaView>
       <ScrollView>
         <View style={styles.imageContainer}>
           <Image source={{ uri: user?.userImage || '' }} style={styles.image} />
@@ -157,7 +157,7 @@ const SettingScreen: FC = () => {
 
         <View style={{ height: 2, backgroundColor: "#1F1F2E", marginVertical: 20 }} />
       </ScrollView>
-    </CustomView>
+    </CustomSafeAreaView>
   )
 }
 

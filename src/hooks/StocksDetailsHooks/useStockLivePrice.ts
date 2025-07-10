@@ -1,8 +1,8 @@
 import {useEffect, useState} from 'react';
-import {BASE_URL} from '../../redux/API';
+import {API_BASE_URL} from '../../redux/API';
 import {io} from 'socket.io-client';
 
-const socket = io(BASE_URL);
+const socket = io(API_BASE_URL);
 
 const useStockLivePrice = (symbol: string) => {
 

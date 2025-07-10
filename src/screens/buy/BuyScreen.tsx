@@ -9,6 +9,7 @@ import { s } from 'react-native-size-matters'
 import { buyHoldingsAction, getHoldingsAction } from '../../redux/actions/buyAction'
 import { refetchUser } from '../../redux/actions/userAction'
 import useStockLivePrice from '../../hooks/StocksDetailsHooks/useStockLivePrice'
+import CustomView from '../../components/global/CustomView'
 
 const BuyScreen = ({ route, navigation }: any) => {
     const { stock } = route.params || {};
@@ -103,7 +104,7 @@ const BuyScreen = ({ route, navigation }: any) => {
     }
 
     return (
-        <CustomSafeAreaView>
+        <CustomView>
             <View
                 style={{
                     flexDirection: 'row',
@@ -183,7 +184,7 @@ const BuyScreen = ({ route, navigation }: any) => {
                     </View>
                 <BuyButton onPress={buyHoldings} error={error} isLoading={isLoading}/>
             </View>
-        </CustomSafeAreaView>
+        </CustomView>
     )
 }
 

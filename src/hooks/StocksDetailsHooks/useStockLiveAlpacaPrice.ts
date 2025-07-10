@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { BASE_URL } from '../../redux/API';
+import { API_BASE_URL } from '../../redux/API';
 import { io } from 'socket.io-client';
 import { updateHoldingPrice } from '../../redux/reducers/holdingSlice';
 
-const socket = io(BASE_URL);
+const socket = io(API_BASE_URL);
 
 const useStockLiveAlpacaPrice = (symbol: string) => {
   const [data, setData] = useState<any>(null);

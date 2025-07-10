@@ -20,7 +20,6 @@ const StockGrid = ({ stocks, title, category }:CatogaryStocksScreen) => {
         navigation.navigate("CatogaryStocksScreen", {
             stocks: stocks,
             title: title || "Stocks",
-            headerShown: true,
             category: category || "",
         });
     }

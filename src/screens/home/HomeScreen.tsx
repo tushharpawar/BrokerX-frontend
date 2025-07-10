@@ -1,6 +1,6 @@
 import { View, RefreshControl } from 'react-native'
 import React, { FC, useState, useCallback } from 'react'
-import CustomView from '../../components/global/CustomView'
+import CustomSafeAreaView from '../../components/global/CustomSafeAreaView'
 import { useAppSelector, useAppDispatch } from '../../redux/reduxHook'
 import StockGrid from '../../components/Stocks/StocksGridHomePage'
 import { getStocksByCategory } from '../../utils/functions/getStocksByCategory'
@@ -8,6 +8,7 @@ import { ScrollView, Text } from 'react-native-gesture-handler'
 import { ViewStyle, TextStyle } from 'react-native'
 import { fetchStocks } from '../../redux/actions/stockAction'
 import { Colors } from '../../constants/Colors'
+import CustomView from '../../components/global/CustomView'
 
 const HomeScreen: FC = () => {
   const [refreshing, setRefreshing] = useState(false);
@@ -33,7 +34,7 @@ const HomeScreen: FC = () => {
     <CustomView
       style={{
         padding: 6,
-        marginBottom: 150,
+        paddingBottom: 100, // Reduced from 150 to 100
       }}
     >
       <ScrollView

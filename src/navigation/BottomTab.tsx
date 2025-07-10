@@ -11,16 +11,23 @@ import { Colors} from '../constants/Colors';
 import { fetchStocks } from '../redux/actions/stockAction';
 import { useAppDispatch } from '../redux/reduxHook';
 import useLiveStocks from '../hooks/useLiveStocks';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { PlatformConstants } from '../utils/PlatformUtils';
 
 const Tab = createBottomTabNavigator();
 
 const BottomTab:FC =()=>{
     const dispatch = useAppDispatch()
+    const insets = useSafeAreaInsets();
+    
     useEffect(()=>{
         dispatch(fetchStocks())
     },[dispatch])
 
     useLiveStocks()
+
+    // Simpler tab bar height calculation
+    const tabBarHeight = Platform.OS === 'android' ? 85 : 85;
 
     return(
         <Tab.Navigator
@@ -28,15 +35,20 @@ const BottomTab:FC =()=>{
             headerShown: false,
             tabBarHideOnKeyboard:true,
             tabBarStyle:{
-                paddingTop:Platform.OS === 'ios' ? RFValue(8) : RFValue(8),
-                paddingBottom:Platform.OS === 'ios' ? RFValue(10) : RFValue(10),
-                backgroundColor:Colors.tabBackground,
-                borderColor:Colors.tabBorder,
-                borderTopWidth:1,
-                height:Platform.OS==='android'? RFValue(65) : RFValue(60),
+                paddingTop: 8,
+                paddingBottom: Platform.OS === 'ios' ? insets.bottom + 5 : 8,
+                backgroundColor: Colors.tabBackground,
+                borderColor: Colors.tabBorder,
+                borderTopWidth: 1,
+                height: tabBarHeight,
             },    
             tabBarActiveTintColor: Colors.tabActive,
-            tabBarInactiveTintColor: Colors.tabInactive,  
+            tabBarInactiveTintColor: Colors.tabInactive,
+            tabBarLabelStyle: {
+                fontSize: 12,
+                fontWeight: '500',
+                marginTop: -2,
+            },
         }
         )}
         >

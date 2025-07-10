@@ -8,14 +8,14 @@ import IonIcons from 'react-native-vector-icons/Ionicons';
 import { Colors } from '../../constants/Colors';
 import MiniChart from '../../components/Stocks/MiniChart';
 import useStockLivePrice from '../../hooks/StocksDetailsHooks/useStockLivePrice';
-import { BASE_URL } from '../../redux/API';
+import { API_BASE_URL } from '../../redux/API';
 import Overview from '../../components/Stocks/Overview';
 import RangeBar from '../../components/Stocks/RangeBar';
 import BuyButton from '../../components/Buy/BuyButton';
 import { useNavigation } from '@react-navigation/native';
 import { useAppSelector } from '../../redux/reduxHook';
 import { checkIfUserOwnsStock, getUserHoldingForStock } from '../../utils/functions/holdingsHelper';
-import { TWELVE_DATA_API_KEY } from '@env';
+import { TWELVE_DATA_API_KEY, TWELVE_DATA_API_URL } from '@env';
 
 const  TOKEN = TWELVE_DATA_API_KEY ;
 
@@ -34,7 +34,7 @@ const StocksDetails = ({ route }: any) => {
     const fetchProfile = async () => {
         try {
             const res = await axios.get(
-                `https://api.twelvedata.com/quote?symbol=${symbol}&apikey=${TOKEN}`,
+                `${TWELVE_DATA_API_URL}/quote?symbol=${symbol}&apikey=${TOKEN}`,
             );
 
             if (res.data && !res.data.code) {
@@ -52,7 +52,7 @@ const StocksDetails = ({ route }: any) => {
     const fetchFinancials = async () => {
         try {
             const res = await axios.get(
-                `${BASE_URL}/api/stock/financials?symbol=${symbol}`
+                `${API_BASE_URL}/api/stock/financials?symbol=${symbol}`
             );
             if (res.data && !res.data.code) {
                 setFinancials(res.data);
@@ -109,7 +109,7 @@ const StocksDetails = ({ route }: any) => {
         navigation.setOptions({
             headerShown: showHeaderContent,
             headerTitle: () => showHeaderContent ? (
-                <View style={styles.headerContainer}>
+                <CustomView style={styles.headerContainer}>
                     <Text style={styles.headerCompanyName} numberOfLines={1}>
                         {stock.companyName}
                     </Text>
@@ -124,7 +124,7 @@ const StocksDetails = ({ route }: any) => {
                             {change >= 0 ? '+' : ''}{change.toFixed(2)} ({change >= 0 ? '+' : ''}{changePercent.toFixed(2)}%)
                         </Text>
                     </View>
-                </View>
+                </CustomView>
             ) : undefined,
             headerStyle: {
                 backgroundColor: Colors.background,
@@ -142,7 +142,7 @@ const StocksDetails = ({ route }: any) => {
     }
 
     return (
-        <CustomSafeAreaView style={{ flex: 1,position: 'relative' }}>
+        <CustomSafeAreaView style={{position: 'relative' }}>
             <Animated.ScrollView 
                 showsHorizontalScrollIndicator={false} 
                 showsVerticalScrollIndicator={false}
@@ -233,7 +233,7 @@ const StocksDetails = ({ route }: any) => {
 
                 </CustomView>
             </Animated.ScrollView>
-            <View style={{backgroundColor:Colors.background,paddingBottom: 10,borderTopWidth:1,borderTopColor:Colors.tabBorder ,paddingHorizontal: 10, position: 'absolute', bottom: 0, left: 0, right: 0}}>
+            <View style={{backgroundColor:Colors.background,paddingBottom: 20,borderTopWidth:1,borderTopColor:Colors.tabBorder ,paddingHorizontal: 15, position: 'absolute', bottom: 0, left: 0, right: 0}}>
                 {userOwnsStock ? (
                     <View style={{ flexDirection: 'row', gap: 10 }}>
                         <View style={{ flex: 1 }}>

@@ -54,14 +54,12 @@ const StocksHomeCard: React.FC<StocksHomeCardProps> = ({ item }) => {
           {item.companyName}
         </Text>
       </View>
-      <Text style={{ color: Colors.white, fontSize: 14,marginTop:12 }}>${currentPrice.toFixed(2)}</Text>
+      <Text style={styles.price}>${currentPrice.toFixed(2)}</Text>
       <Text
-        style={{
-          color: isPositive ? "limegreen" : "tomato",
-          fontWeight: "600",
-          fontSize: 14,
-          marginTop: 4,
-        }}
+        style={[
+          styles.change,
+          { color: isPositive ? "limegreen" : "tomato" }
+        ]}
       >
         {isPositive ? '+' : ''}{change.toFixed(2)} ({isPositive ? '+' : ''}{changePercent.toFixed(2)}%)
       </Text>
@@ -83,5 +81,16 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.2,
         shadowRadius: 6,
         elevation: 4,
-      }
+      },
+      price: {
+        color: Colors.white,
+        fontSize: 16,
+        fontWeight: '600',
+        marginTop: 12,
+      },
+      change: {
+        fontWeight: "600",
+        fontSize: 14,
+        marginTop: 4,
+      },
 })

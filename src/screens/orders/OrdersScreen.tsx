@@ -1,10 +1,10 @@
 import { StyleSheet, Text, View, FlatList, ActivityIndicator, RefreshControl, TouchableOpacity } from 'react-native'
 import React, { useState, useEffect, useCallback } from 'react'
-import CustomSafeAreaView from '../../components/global/CustomSafeAreaView'
 import { Colors } from '../../constants/Colors'
 import { useAppSelector } from '../../redux/reduxHook'
 import { fetchOrdersAction } from '../../redux/actions/orderAction'
 import { useNavigation } from '@react-navigation/native'
+import CustomView from '../../components/global/CustomView'
 
 interface Order {
     _id: string;
@@ -186,7 +186,7 @@ const OrdersScreen = () => {
 
     if (error && orders.length === 0 && !loading) {
         return (
-            <CustomSafeAreaView style={styles.container}>
+            <CustomView style={styles.container}>
                 <View style={styles.errorContainer}>
                     <Text style={styles.errorTitle}>Oops! Something went wrong</Text>
                     <Text style={styles.errorMessage}>{error}</Text>
@@ -194,12 +194,12 @@ const OrdersScreen = () => {
                         <Text style={styles.retryButtonText}>Try Again</Text>
                     </TouchableOpacity>
                 </View>
-            </CustomSafeAreaView>
+            </CustomView>
         );
     }
 
     return (
-        <CustomSafeAreaView style={styles.container}>
+        <CustomView style={styles.container}>
             <FlatList
                 data={orders}
                 keyExtractor={(item, index) => item._id || index.toString()}
@@ -232,7 +232,7 @@ const OrdersScreen = () => {
                     <Text style={styles.loadingText}>Loading your orders...</Text>
                 </View>
             )}
-        </CustomSafeAreaView>
+        </CustomView>
     )
 }
 

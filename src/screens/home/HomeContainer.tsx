@@ -6,6 +6,7 @@ import {
   ScrollView,
   RefreshControl,
   Dimensions,
+  Platform,
 } from 'react-native';
 import { Colors } from '../../constants/Colors';
 import CustomView from '../../components/global/CustomView';
@@ -15,6 +16,9 @@ import { fetchStocks } from '../../redux/actions/stockAction';
 import { getHoldingsAction } from '../../redux/actions/buyAction';
 import { useSelector } from 'react-redux';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { PlatformConstants } from '../../utils/PlatformUtils';
+import CustomSafeAreaView from '../../components/global/CustomSafeAreaView';
 
 const { height: screenHeight } = Dimensions.get('window');
 
@@ -25,6 +29,12 @@ const HomeContainer = () => {
   const { user } = useSelector((state: any) => state?.user);
   const { stocks } = useAppSelector((state) => state.stocks);
   const { holdings } = useAppSelector((state: any) => state?.holdings);
+  const insets = useSafeAreaInsets();
+
+  // Calculate proper bottom padding for tab bar
+  const tabBarHeight = Platform.OS === 'android' 
+    ? 65 
+    : 60 + (PlatformConstants.isIphoneX ? insets.bottom : 0);
 
   // Fetch initial data when component mounts
   useEffect(() => {
@@ -76,7 +86,7 @@ const HomeContainer = () => {
   };
 
   return (
-    <CustomView style={styles.container}>
+    <CustomSafeAreaView style={styles.container}>
       <ScrollView
         style={styles.scrollView}
         showsVerticalScrollIndicator={false}
@@ -148,7 +158,7 @@ const HomeContainer = () => {
 
         {/* Tab Content will be rendered inside the TabNavigator */}
       </ScrollView>
-    </CustomView>
+    </CustomSafeAreaView>
   );
 };
 

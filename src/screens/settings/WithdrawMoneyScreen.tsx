@@ -7,7 +7,6 @@ import Animated, {
     withTiming,
 } from 'react-native-reanimated';
 import { Colors } from '../../constants/Colors';
-import CustomSafeAreaView from '../../components/global/CustomSafeAreaView';
 import axios from 'axios'
 import { refetchUser } from '../../redux/actions/userAction'
 import { useAppDispatch, useAppSelector } from '../../redux/reduxHook';
@@ -15,6 +14,7 @@ import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { Vibration } from 'react-native';
 import { WITHDRAW_MONEY } from '../../redux/API';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import CustomView from '../../components/global/CustomView';
 
 interface WithdrawalData {
     success: boolean;
@@ -165,7 +165,7 @@ export default function WithdrawMoneyScreen() {
     };
 
     return (
-        <CustomSafeAreaView>
+        <CustomView>
             <View style={styles.container}>
                 <View style={styles.balanceContainer}>
                     <Text style={styles.balanceLabel}>Available Balance</Text>
@@ -302,7 +302,7 @@ export default function WithdrawMoneyScreen() {
                     </View>
                 </View>
             </Modal>
-        </CustomSafeAreaView>
+        </CustomView>
     );
 }
 

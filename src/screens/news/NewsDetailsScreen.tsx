@@ -11,8 +11,8 @@ import {
 } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Colors } from '../../constants/Colors';
-import CustomSafeAreaView from '../../components/global/CustomSafeAreaView';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import CustomSafeAreaView from '../../components/global/CustomSafeAreaView';
 
 interface NewsItem {
   id: string;

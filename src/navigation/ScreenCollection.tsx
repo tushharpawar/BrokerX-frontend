@@ -12,7 +12,6 @@ import SellScreen from "../screens/buy/SellScreen";
 import OrdersScreen from "../screens/orders/OrdersScreen";
 import TransactionsScreen from "../screens/transactions/TransactionsScreen";
 import HoldingsScreen from "../screens/holdings/HoldingsScreen";
-import WatchlistScreen from "../screens/watchlist/WatchlistScreen";
 import NewsDetailsScreen from "../screens/news/NewsDetailsScreen";
 
 export const authStack = [
@@ -46,10 +45,6 @@ export const homeStack = [
         name:'HoldingsScreen',
         component:HoldingsScreen,
     },
-    {
-        name:'WatchlistScreen',
-        component:WatchlistScreen
-    }
 ]
 
 export const stockStack = [

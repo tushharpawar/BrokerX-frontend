@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import axios from "axios";
-import { TWELVE_DATA_API_KEY } from "@env";
+import { TWELVE_DATA_API_KEY, TWELVE_DATA_API_URL } from "@env";
 
 const API_KEY = TWELVE_DATA_API_KEY;
 
@@ -28,7 +28,7 @@ export const getTimeRange = async (symbol: string, filter: "1D" | "1W" | "1M" | 
   const now = Math.floor(Date.now() / 1000);
 
   try {
-    const res = await axios.get("https://api.twelvedata.com/time_series", {
+    const res = await axios.get(`${TWELVE_DATA_API_URL}/time_series`, {
       params: {
         symbol,
         interval: resolution,

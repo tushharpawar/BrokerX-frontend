@@ -1,11 +1,11 @@
 import axios from 'axios'
-import { BASE_URL, REFRESH_TOKEN } from './API'
+import { API_BASE_URL, REFRESH_TOKEN } from './API'
 import { token_storage } from './storage'
 import { Alert } from 'react-native'
 import { resetAndNavigate } from '../utils/NavigationUtils'
 
 export const appAxios = axios.create({
-    baseURL:BASE_URL
+    baseURL:API_BASE_URL
 })
 
 appAxios.interceptors.request.use(

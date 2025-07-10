@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, RefreshControl } from 'react-native'
 import React, { useState, useCallback } from 'react'
-import CustomSafeAreaView from '../../components/global/CustomSafeAreaView'
+import CustomView from '../../components/global/CustomView'
 import CustomText from '../../components/global/CustomText'
 import { useAppSelector, useAppDispatch } from '../../redux/reduxHook'
 import HoldingCard from '../../components/Holdings/HoldingCard'
@@ -32,11 +32,11 @@ const HoldingsScreen = () => {
     }, [dispatch, user?._id]);
 
     return (
-        <CustomSafeAreaView>
+        <CustomView>
             <ScrollView 
                 showsVerticalScrollIndicator={false}
                 style={{ 
-                    marginBottom: 180
+                    paddingBottom: 100 // Reduced from 180 to 100
                 }}
                 refreshControl={
                     <RefreshControl
@@ -98,7 +98,7 @@ const HoldingsScreen = () => {
                     </CustomText>
                 )}
             </ScrollView>
-        </CustomSafeAreaView>
+        </CustomView>
     )
 }
 

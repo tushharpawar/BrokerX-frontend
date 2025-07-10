@@ -8,6 +8,7 @@ import {
 } from 'react-native-wagmi-charts';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import dayjs from "dayjs"
+import { TWELVE_DATA_API_URL } from '@env';
 
 interface MiniChartProps {
     symbol: string;
@@ -48,7 +49,7 @@ const MiniChart = ({ symbol,color }: MiniChartProps) => {
         const newTo = dayjs.unix(to).format("YYYY-MM-DD HH:mm:ss")
 
         try {
-            const response = await axios.get("https://api.twelvedata.com/time_series", {
+            const response = await axios.get(`${TWELVE_DATA_API_URL}/time_series`, {
                 params: {
                     symbol: symbol,
                     start_date: newFrom,

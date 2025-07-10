@@ -7,15 +7,15 @@ import Animated, {
     withTiming,
 } from 'react-native-reanimated';
 import { Colors } from '../../constants/Colors';
-import CustomSafeAreaView from '../../components/global/CustomSafeAreaView';
 import axios from 'axios'
 import RazorpayCheckout from 'react-native-razorpay';
 import { refetchUser } from '../../redux/actions/userAction'
 import { useAppDispatch, useAppSelector } from '../../redux/reduxHook';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { Vibration } from 'react-native';
-import { BASE_URL } from '../../redux/API';
-import { RAZORPAY_KEY } from '@env';
+import { API_BASE_URL } from '../../redux/API';
+import { RAZORPAY_KEY, COMPANY_LOGO_URL } from '@env';
+import CustomView from '../../components/global/CustomView';
 
 export default function AddMoneyScreen() {
     const [amount, setAmount] = useState("");
@@ -114,12 +114,12 @@ export default function AddMoneyScreen() {
             amount: parseFloat(amount),
         }
         try {
-            const res = await axios.post(`${BASE_URL}/api/razorpay/create-order`, values
+            const res = await axios.post(`${API_BASE_URL}/api/razorpay/create-order`, values
             )
             console.log("Response", res)
             const options = {
                 description: 'Test Order',
-                image: "https://res.cloudinary.com/ddprwohnl/image/upload/v1724407337/glitchover/uhtdofbij5srb8vhnbpl.jpg",
+                image: COMPANY_LOGO_URL,
                 currency: 'USD',
                 key: RAZORPAY_KEY,
                 amount: res.data.amount,
@@ -136,7 +136,7 @@ export default function AddMoneyScreen() {
             res && options && RazorpayCheckout?.open(options)
                 .then(async (paymentData) => {
                     try {
-                        const response = await axios.post(`${BASE_URL}/api/razorpay/verify-order`, { ...paymentData, amount: values.amount, userId: user?._id })
+                        const response = await axios.post(`${API_BASE_URL}/api/razorpay/verify-order`, { ...paymentData, amount: values.amount, userId: user?._id })
                         console.log("Response after verification", response.data.success);
                         if (response.data.success) {
                             navigation.replace('BottomTab', { screen: 'Settings' });
@@ -166,7 +166,7 @@ export default function AddMoneyScreen() {
     }
 
     return (
-        <CustomSafeAreaView>
+        <CustomView>
             <View style={styles.container}>
                 <View
                     style={{ width: "100%", height: "50%", alignItems: "center", justifyContent: "center" }}
@@ -253,7 +253,7 @@ export default function AddMoneyScreen() {
                     </View>
                 </View>
             </View>
-        </CustomSafeAreaView>
+        </CustomView>
     );
 }
 

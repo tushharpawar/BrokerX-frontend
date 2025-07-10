@@ -4,7 +4,7 @@ export const REGISTER = `${BASE_URL}/oauth/register`;
 export const LOGIN = `${BASE_URL}/oauth/login`;
 export const REFRESH_TOKEN = `${BASE_URL}/oauth/refresh-token`;
 export const UPLOAD = `${BASE_URL}/file/upload`;
-export { GIPHY_API_KEY };
+export const GIPHY_KEY = GIPHY_API_KEY;
 export const GET_STOCKS = `${BASE_URL}/api/stocks`;
 export const BUY_HOLDINGS = `${BASE_URL}/api/holdings/buy`;
 export const SELL_HOLDINGS = `${BASE_URL}/api/holdings/sell`;
@@ -17,4 +17,4 @@ export const SEARCH_STOCKS = `${BASE_URL}/api/search/suggestions`;
 export const GET_STOCK_QUOTE = `${BASE_URL}/api/stocks/quote`;
 
 // Export BASE_URL for direct use
-export { BASE_URL };
+export const API_BASE_URL = BASE_URL;

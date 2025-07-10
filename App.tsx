@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import { Platform, SafeAreaView, StatusBar, StyleSheet, Text, View } from 'react-native'
+import { Platform, StatusBar, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import Navigation from './src/navigation/Navigation'
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -9,6 +9,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import CustomSafeAreaView from './src/components/global/CustomSafeAreaView';
 import { GOOGLE_WEB_CLIENT_ID } from '@env';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 GoogleSignin.configure({
   webClientId: GOOGLE_WEB_CLIENT_ID,
@@ -18,16 +19,20 @@ GoogleSignin.configure({
 
 const App = () => {
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <StatusBar translucent={Platform.OS === 'ios'} backgroundColor={'transparent'} />
-      <CustomSafeAreaView>
+    <SafeAreaProvider>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <StatusBar 
+          translucent={false} 
+          backgroundColor={'#0A0A0A'} 
+          barStyle="light-content"
+        />
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
             <Navigation />
           </PersistGate>
         </Provider>
-      </CustomSafeAreaView>
-    </GestureHandlerRootView>
+      </GestureHandlerRootView>
+    </SafeAreaProvider>
   )
 }
 

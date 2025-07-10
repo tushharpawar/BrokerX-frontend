@@ -1,6 +1,5 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import CustomSafeAreaView from '../../components/global/CustomSafeAreaView'
 import { Colors } from '../../constants/Colors'
 import { TextInput } from 'react-native-gesture-handler'
 import BuyButton from '../../components/Buy/BuyButton'
@@ -10,6 +9,7 @@ import useStockLivePrice from '../../hooks/StocksDetailsHooks/useStockLivePrice'
 import { sellHoldingsAction } from '../../redux/actions/sellAction'
 import { getHoldingsAction } from '../../redux/actions/buyAction'
 import { refetchUser } from '../../redux/actions/userAction'
+import CustomSafeAreaView from '../../components/global/CustomSafeAreaView'
 
 const SellScreen = ({ route, navigation }: any) => {
     const { stock, holding } = route.params || {};
@@ -260,7 +260,7 @@ const SellScreen = ({ route, navigation }: any) => {
                 </View>
             )}
 
-            <View style={{ marginBottom: 10, marginHorizontal: 10, position: 'absolute', bottom: 0, left: 0, right: 0 }}>
+            <View style={{ marginBottom: 10, marginHorizontal: 10, position: 'absolute', bottom: 20, left: 0, right: 0 }}>
                 <View style={{
                     flexDirection: 'row',
                     justifyContent: 'space-between',

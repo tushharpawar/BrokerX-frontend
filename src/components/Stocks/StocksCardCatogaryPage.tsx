@@ -18,38 +18,53 @@ interface StocksCardCatogaryProps {
 
 const StocksCardCatogaryPage: React.FC<StocksCardCatogaryProps> = ({ item }) => {
   const navigation = useNavigation<any>()
-    const previousClosePrice = item?.prevClose
+  const previousClosePrice = item?.prevClose || 0;
+  const currentPrice = item?.price || 0;
 
-  const change = item.price - previousClosePrice;
-  const changePercent = (change / previousClosePrice) * 100;
+  let change = 0;
+  let changePercent = 0;
+  
+  if (item.change && item.percent) {
+    change = parseFloat(item.change);
+    changePercent = parseFloat(item.percent);
+  } else if (item.changeRaw !== undefined) {
+    change = item.changeRaw;
+    changePercent = previousClosePrice > 0 ? (change / previousClosePrice) * 100 : 0;
+  } else if (currentPrice && previousClosePrice && currentPrice !== previousClosePrice) {
+    change = currentPrice - previousClosePrice;
+    changePercent = (change / previousClosePrice) * 100;
+  }
+
+  const isPositive = change >= 0;
+
   return (
  <TouchableOpacity
       style={styles.cardContainer}
       onPress={() => navigation.navigate("StocksDetails",{ stock: item })}
     >
-      <View style={{ marginBottom: 8 }}>
+      <View style={styles.leftSection}>
         <Image
           source={{ uri: item.logo }}
-          style={{ width: 45, height: 45, borderRadius: 16, marginRight: 8 }}
+          style={styles.logo}
         />
-        <Text style={{ fontWeight: "bold", color: Colors.white, flexShrink: 1 ,marginTop: 4,fontSize: 14}}>
-          {item.companyName}
-        </Text>
+        <View style={styles.companyInfo}>
+          <Text style={styles.companyName} numberOfLines={2}>
+            {item.companyName}
+          </Text>
+        </View>
       </View>
 
-    <View>   
-     <Text style={{ color: Colors.white, fontSize: 14 }}>${item.price.toFixed(2)}</Text>
-      <Text
-        style={{
-          color: item.changeRaw || change >= 0 ? "limegreen" : "tomato",
-          fontWeight: "600",
-          fontSize: 14,
-          marginTop: 4,
-        }}
-      >
-        {item.change || change.toFixed(2)} ({item.percent || changePercent.toFixed(2)}%)
-      </Text>
-    </View>
+      <View style={styles.rightSection}>   
+        <Text style={styles.price}>${currentPrice.toFixed(2)}</Text>
+        <Text
+          style={[
+            styles.change,
+            { color: isPositive ? "limegreen" : "tomato" }
+          ]}
+        >
+          {isPositive ? '+' : ''}{change.toFixed(2)} ({isPositive ? '+' : ''}{changePercent.toFixed(2)}%)
+        </Text>
+      </View>
     </TouchableOpacity>
   )
 }
@@ -60,7 +75,7 @@ const styles = StyleSheet.create({
     cardContainer:{
         backgroundColor: Colors.cardBackground, // dark card
         borderRadius: 12,
-        padding: 12,
+        padding: 16,
         margin: 5,
         shadowColor: "#000",
         shadowOpacity: 0.2,
@@ -69,5 +84,43 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         justifyContent:'space-between',
         alignItems:'center',
-      }
+        marginVertical: 8,
+      },
+      leftSection: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        flex: 1,
+      },
+      logo: {
+        width: 45,
+        height: 45,
+        borderRadius: 16,
+        marginRight: 12,
+      },
+      companyInfo: {
+        flex: 1,
+        justifyContent: 'center',
+      },
+      companyName: {
+        fontWeight: "bold",
+        color: Colors.white,
+        fontSize: 14,
+        flexShrink: 1,
+      },
+      rightSection: {
+        alignItems: 'flex-end',
+        justifyContent: 'center',
+        minWidth: 80,
+      },
+      price: {
+        color: Colors.white,
+        fontSize: 16,
+        fontWeight: '600',
+        marginBottom: 4,
+      },
+      change: {
+        fontWeight: "600",
+        fontSize: 14,
+        textAlign: 'right',
+      },
 })
