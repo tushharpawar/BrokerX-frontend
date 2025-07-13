@@ -7,6 +7,7 @@ BrokerX is a real-time stock trading backend application designed to simulate fe
 ---
 
 ## 🚀 Demo
+📲 [Download apk](https://drive.google.com/file/d/19JQxZ3Z_W_91YdS4VkdS-9HFRaEYNJT-/view?usp=drive_link)
 
 ▶️ [Watch Demo Video](https://drive.google.com/file/d/1OxrC0JI067tPyaRxs1mUXQVOPNyCt33a/view?usp=drive_link)
 
